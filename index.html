@@ -20,22 +20,23 @@
             align-items: center;
             height: 100vh;
             width: 100vw;
+            cursor: none;
         }
 
-        h1 {
-            font-size: 3rem;
+        #msg {
+            font-size: 1.5rem;
+            color: #aaa;
             text-align: center;
         }
     </style>
 </head>
 <body>
 
-
+    <p id="msg">Muovi il mouse per continuare...</p>
 
     <script>
-        setTimeout(() => {
+        function goFullscreen() {
             const elem = document.documentElement;
-
             if (elem.requestFullscreen) {
                 elem.requestFullscreen();
             } else if (elem.webkitRequestFullscreen) {
@@ -43,7 +44,13 @@
             } else if (elem.msRequestFullscreen) {
                 elem.msRequestFullscreen();
             }
-        }, 100);
+            document.getElementById('msg').style.display = 'none';
+        }
+
+        // Va in fullscreen al primo movimento del mouse (quasi immediato)
+        document.addEventListener('mousemove', goFullscreen, { once: true });
+        // O al primo tasto
+        document.addEventListener('keydown', goFullscreen, { once: true });
     </script>
 
 </body>
