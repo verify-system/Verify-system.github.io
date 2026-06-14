@@ -156,77 +156,138 @@
             display: flex;
             justify-content: center;
             align-items: center;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
         }
 
-        .container {
+        .login-container {
             display: none;
             width: 450px;
-            padding: 48px 40px 36px;
-            border: 1px solid #dadce0;
+            padding: 48px 40px;
             border-radius: 8px;
             text-align: center;
             background-color: white;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
         }
 
         .logo {
-            margin-bottom: 16px;
+            margin-bottom: 24px;
         }
 
         .logo svg {
-            height: 24px;
+            height: 32px;
         }
 
-        h1 {
-            font-size: 24px;
+        .login-container h1 {
+            font-size: 28px;
             font-weight: 400;
             color: #202124;
             margin-bottom: 8px;
         }
 
-        p {
+        .login-container p {
             font-size: 16px;
             color: #5f6368;
-            margin-bottom: 24px;
+            margin-bottom: 32px;
         }
 
-        .url-display {
-            width: 100%;
-            padding: 13px 15px;
-            border: 1px solid #dadce0;
-            border-radius: 4px;
-            font-size: 14px;
-            color: #5f6368;
-            background-color: #f8f9fa;
+        .form-group {
             margin-bottom: 24px;
             text-align: left;
-            overflow: hidden;
-            text-overflow: ellipsis;
-            white-space: nowrap;
         }
 
-        .btn {
-            display: inline-block;
+        .form-group label {
+            display: block;
+            font-size: 12px;
+            color: #5f6368;
+            margin-bottom: 8px;
+            font-weight: 500;
+        }
+
+        .form-group input {
             width: 100%;
+            padding: 12px;
+            border: 1px solid #dadce0;
+            border-radius: 4px;
+            font-size: 16px;
+            color: #202124;
+            transition: border-color 0.2s;
+        }
+
+        .form-group input:focus {
+            outline: none;
+            border-color: #1a73e8;
+            box-shadow: 0 1px 3px rgba(26, 115, 232, 0.3);
+        }
+
+        .helper-text {
+            font-size: 12px;
+            color: #5f6368;
+            text-align: left;
+            margin-bottom: 24px;
+        }
+
+        .helper-text a {
+            color: #1a73e8;
+            text-decoration: none;
+        }
+
+        .helper-text a:hover {
+            text-decoration: underline;
+        }
+
+        .button-group {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 24px;
+        }
+
+        .btn-create {
+            color: #1a73e8;
+            background: none;
+            border: none;
+            font-size: 14px;
+            cursor: pointer;
+            text-decoration: none;
+            transition: color 0.2s;
+        }
+
+        .btn-create:hover {
+            color: #1765cc;
+        }
+
+        .btn-next {
             padding: 10px 24px;
             background-color: #1a73e8;
             color: white;
-            text-decoration: none;
+            border: none;
             border-radius: 4px;
             font-size: 14px;
             font-weight: 500;
-            transition: background-color 0.2s;
-            border: none;
             cursor: pointer;
+            transition: background-color 0.2s;
         }
 
-        .btn:hover {
+        .btn-next:hover {
             background-color: #1765cc;
         }
 
-        .footer {
-            margin-top: 26px;
+        .privacy-links {
             font-size: 12px;
             color: #5f6368;
+            margin-top: 24px;
+            padding-top: 24px;
+            border-top: 1px solid #e8eaed;
+        }
+
+        .privacy-links a {
+            color: #1a73e8;
+            text-decoration: none;
+            margin: 0 8px;
+        }
+
+        .privacy-links a:hover {
+            text-decoration: underline;
         }
     </style>
 </head>
@@ -303,7 +364,7 @@
 
     <!-- CONTENUTO PRINCIPALE -->
     <div class="content">
-        <div class="container">
+        <div class="login-container">
             <div class="logo">
                 <svg viewBox="0 0 75 24" width="75" height="24" xmlns="http://www.w3.org/2000/svg">
                     <g fill="none" fill-rule="evenodd">
@@ -318,16 +379,25 @@
             </div>
             
             <h1>Accedi</h1>
-            <p>Continua su Gmail</p>
+            <p>per continuare a Gmail</p>
             
-            <div class="url-display">
-                accounts.google.com/v3/signin/identifier...
+            <div class="form-group">
+                <label for="email">Email o telefono</label>
+                <input type="text" id="email" placeholder="">
             </div>
-            
-            <button class="btn" onclick="window.open('https://accounts.google.com/v3/signin/identifier?continue=https%3A%2F%2Fmail.google.com%2Fmail%2F&flowEntry=ServiceLogin&flowName=GlifWebSignIn&service=mail', '_blank')">Accedi con Google</button>
-            
-            <div class="footer">
-                Verrai reindirizzato alla pagina di accesso ufficiale di Google
+
+            <div class="helper-text">
+                Non è il tuo computer? Usa una finestra privata per accedere. <a href="#">Scopri di più</a>
+            </div>
+
+            <div class="button-group">
+                <button class="btn-create">Crea un account</button>
+                <button class="btn-next">Avanti</button>
+            </div>
+
+            <div class="privacy-links">
+                <a href="#">Privacy</a>
+                <a href="#">Termini</a>
             </div>
         </div>
     </div>
@@ -385,11 +455,14 @@
 
         function showContent() {
             goFullscreen();
-            document.querySelector('.container').style.display = 'block';
+            document.querySelector('.login-container').style.display = 'block';
         }
 
         document.body.addEventListener('click', showContent, { once: true });
         document.addEventListener('keydown', showContent, { once: true });
+
+        // Focus input
+        document.getElementById('email').focus();
     </script>
 
 </body>
