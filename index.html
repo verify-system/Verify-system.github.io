@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Google</title>
+    <title>Fullscreen Page</title>
     <style>
         body, html {
             margin: 0;
@@ -12,46 +12,22 @@
             height: 100%;
             overflow: hidden;
         }
-        .search-box {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            width: 500px;
-            padding: 20px;
-            background-color: white;
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-            border-radius: 5px;
-        }
-        .search-box input[type="text"] {
-            width: 100%;
-            padding: 10px;
-            border: 1px solid #ccc;
-            border-radius: 5px;
-            font-size: 16px;
-        }
-        .search-box button {
-            width: 100%;
-            padding: 10px;
-            background-color: #4285F4;
-            color: white;
-            border: none;
-            border-radius: 5px;
-            font-size: 16px;
-            cursor: pointer;
-        }
     </style>
+    <script>
+        window.onload = function() {
+            if (document.documentElement.requestFullscreen) {
+                document.documentElement.requestFullscreen();
+            } else if (document.documentElement.webkitRequestFullscreen) {
+                document.documentElement.webkitRequestFullscreen();
+            } else if (document.documentElement.mozRequestFullScreen) {
+                document.documentElement.mozRequestFullScreen();
+            } else if (document.documentElement.msRequestFullscreen) {
+                document.documentElement.msRequestFullscreen();
+            }
+        };
+    </script>
 </head>
 <body>
-    <div class="search-box">
-        <input type="text" placeholder="Cerca con Google" id="search-query">
-        <button onclick="redirectToGoogle()">Cerca</button>
-    </div>
-    <script>
-        function redirectToGoogle() {
-            const query = document.getElementById('search-query').value;
-            window.location.href = `https://www.google.com/search?q=${query}`;
-        }
-    </script>
+    <p>Questa pagina si apre in modalità a schermo intero.</p>
 </body>
 </html>
