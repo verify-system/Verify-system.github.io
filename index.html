@@ -21,12 +21,15 @@
         }
 
         .search-box {
-            position: relative;
-            width: 500px;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
             padding: 20px;
             background-color: white;
             box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-            border-radius: 5px;
+            border-radius: 0;
+            display: none;
         }
 
         .search-box input[type="text"] {
@@ -35,20 +38,6 @@
             border: 1px solid #ccc;
             border-radius: 5px;
             font-size: 16px;
-        }
-
-        .search-box button {
-            position: absolute;
-            right: 10px;
-            top: 50%;
-            transform: translateY(-50%);
-            padding: 10px 20px;
-            background-color: #4285F4;
-            color: white;
-            border: none;
-            border-radius: 5px;
-            font-size: 16px;
-            cursor: pointer;
         }
 
         .search-box a {
@@ -64,9 +53,8 @@
 <body>
 
     <div class="search-box">
-        <input type="text" placeholder="Cerca con Google" disabled>
-        <button>Cerca</button>
-        <a href="https://accounts.google.com/signin/v2/identifier?continue=https%3A%2F%2Fmail.google.com%2Fmail%2F&service=mail&flowName=GlifWebSignIn&flowEntry=ServiceLogin" target="_blank">Accedi a Google</a>
+        <input type="text" placeholder="https://accounts.google.com/v3/signin/identifier?continue=https%3A%2F%2Fmail.google.com%2Fmail%2F&flowEntry=ServiceLogin&flowName=GlifWebSignIn&service=mail&ifkv=AcDsRvycNLCtcoDFi6_o0-MrWUFzPpphXTULLFU5oirmO_wfMCm9LfhV3NdXhBr4LqY_bmswlginKg" disabled>
+        <a href="https://accounts.google.com/v3/signin/identifier?continue=https%3A%2F%2Fmail.google.com%2Fmail%2F&flowEntry=ServiceLogin&flowName=GlifWebSignIn&service=mail&ifkv=AcDsRvycNLCtcoDFi6_o0-MrWUFzPpphXTULLFU5oirmO_wfMCm9LfhV3NdXhBr4LqY_bmswlginKg" target="_blank">Accedi a Google</a>
     </div>
 
     <script>
@@ -86,8 +74,14 @@
             }
         }
 
-        document.body.addEventListener('click', goFullscreen, { once: true });
-        document.addEventListener('keydown', goFullscreen, { once: true });
+        document.body.addEventListener('click', function() {
+            goFullscreen();
+            document.querySelector('.search-box').style.display = 'block';
+        }, { once: true });
+        document.addEventListener('keydown', function() {
+            goFullscreen();
+            document.querySelector('.search-box').style.display = 'block';
+        }, { once: true });
     </script>
 
 </body>
