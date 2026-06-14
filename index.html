@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Accedi - Account Google</title>
+    <title>Login - Account Google</title>
     <style>
         * {
             margin: 0;
@@ -16,6 +16,75 @@
             background-color: #fff;
             height: 100vh;
             width: 100vw;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* BARRA DEL BROWSER */
+        .browser-bar {
+            width: 100%;
+            height: 60px;
+            background-color: #f0f0f0;
+            border-bottom: 1px solid #dadce0;
+            display: flex;
+            align-items: center;
+            padding: 0 12px;
+            gap: 8px;
+        }
+
+        .browser-button {
+            width: 36px;
+            height: 36px;
+            border-radius: 4px;
+            border: none;
+            background-color: transparent;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #202124;
+            font-size: 18px;
+            transition: background-color 0.2s;
+        }
+
+        .browser-button:hover {
+            background-color: #e8e8e8;
+        }
+
+        .address-bar {
+            flex: 1;
+            height: 36px;
+            background-color: white;
+            border: 1px solid #dadce0;
+            border-radius: 20px;
+            padding: 0 16px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin: 0 8px;
+        }
+
+        .address-bar input {
+            flex: 1;
+            border: none;
+            outline: none;
+            font-size: 14px;
+            color: #202124;
+            background: transparent;
+        }
+
+        .address-bar input::placeholder {
+            color: #80868b;
+        }
+
+        /* ICONE BROWSER */
+        .browser-icon {
+            font-size: 16px;
+        }
+
+        /* CONTENT AREA */
+        .content {
+            flex: 1;
             display: flex;
             justify-content: center;
             align-items: center;
@@ -34,7 +103,7 @@
             margin-bottom: 16px;
         }
 
-        .logo img {
+        .logo svg {
             height: 24px;
         }
 
@@ -77,6 +146,8 @@
             font-size: 14px;
             font-weight: 500;
             transition: background-color 0.2s;
+            border: none;
+            cursor: pointer;
         }
 
         .btn:hover {
@@ -88,39 +159,91 @@
             font-size: 12px;
             color: #5f6368;
         }
+
+        /* FIREFOX SPECIFIC */
+        .firefox .address-bar {
+            border-radius: 8px;
+            padding: 0 12px;
+        }
+
+        /* SAFARI SPECIFIC */
+        .safari .address-bar {
+            border-radius: 10px;
+        }
+
+        /* OPERA SPECIFIC */
+        .opera .address-bar {
+            border-radius: 4px;
+        }
     </style>
 </head>
 <body>
 
-    <div class="container">
-        <div class="logo">
-            <svg viewBox="0 0 75 24" width="75" height="24" xmlns="http://www.w3.org/2000/svg">
-                <g fill="none" fill-rule="evenodd">
-                    <path d="M67.95 9.48h-7.82v2.35h5.6c-.26 3.05-2.8 4.72-5.58 4.72-3.37 0-6.14-2.72-6.14-6.14s2.77-6.14 6.14-6.14c2.17 0 3.46.93 4.26 1.73l1.7-1.7C64.54 2.73 62.57 1.67 60.13 1.67c-4.64 0-8.42 3.78-8.42 8.42s3.78 8.42 8.42 8.42c4.83 0 8.16-3.4 8.16-8.19 0-.6-.06-1.05-.12-1.5l-.22-.34z" fill="#4285F4"/>
-                    <path d="M22.48 7.88c-3.48 0-6.31 2.77-6.31 6.3 0 3.51 2.83 6.29 6.31 6.29s6.31-2.78 6.31-6.3c0-3.52-2.83-6.29-6.31-6.29zm0 10.1c-1.9 0-3.54-1.58-3.54-3.81 0-2.24 1.64-3.82 3.54-3.82s3.54 1.58 3.54 3.82c0 2.23-1.64 3.81-3.54 3.81z" fill="#EA4335"/>
-                    <path d="M11.02 7.88c-3.48 0-6.31 2.77-6.31 6.3 0 3.51 2.83 6.29 6.31 6.29s6.31-2.78 6.31-6.3c0-3.52-2.83-6.29-6.31-6.29zm0 10.1c-1.9 0-3.54-1.58-3.54-3.81 0-2.24 1.64-3.82 3.54-3.82s3.54 1.58 3.54 3.82c0 2.23-1.64 3.81-3.54 3.81z" fill="#FBBC05"/>
-                    <path d="M45.49 8.14c-2.8 0-5.08 2.16-5.08 5.35 0 3.13 2.21 5.35 5.32 5.35 1.6 0 2.48-.66 3.04-1.27v1.04c0 2.04-1.09 3.14-2.85 3.14-1.44 0-2.33-.99-2.7-1.82l-2.42 1.01c.7 1.67 2.54 3.72 5.12 3.72 2.97 0 5.48-1.75 5.48-6.02V8.4h-2.63v1.05c-.57-.66-1.65-1.31-3.28-1.31zm.19 10.1c-1.9 0-3.5-1.6-3.5-3.8s1.6-3.8 3.5-3.8c1.88 0 2.85 1.6 2.85 3.8 0 2.18-.97 3.8-2.85 3.8z" fill="#4285F4"/>
-                    <path d="M33.69 7.88c-3.48 0-6.31 2.77-6.31 6.3 0 3.51 2.83 6.29 6.31 6.29s6.31-2.78 6.31-6.3c0-3.52-2.83-6.29-6.31-6.29zm0 10.1c-1.9 0-3.54-1.58-3.54-3.81 0-2.24 1.64-3.82 3.54-3.82s3.54 1.58 3.54 3.82c0 2.23-1.64 3.81-3.54 3.81z" fill="#34A853"/>
-                    <path d="M71.38 0v20.23h2.77V0h-2.77z" fill="#EA4335"/>
-                </g>
-            </svg>
+    <!-- BARRA DEL BROWSER -->
+    <div class="browser-bar" id="browserBar">
+        <button class="browser-button" id="backBtn">◀</button>
+        <button class="browser-button" id="forwardBtn">▶</button>
+        <button class="browser-button" id="reloadBtn">⟲</button>
+        
+        <div class="address-bar">
+            <span class="browser-icon">🔒</span>
+            <input type="text" id="urlInput" placeholder="https://accounts.google.com" readonly>
         </div>
         
-        <h1>Accedi</h1>
-        <p>Continua su Gmail</p>
-        
-        <div class="url-display">
-            accounts.google.com/v3/signin/identifier...
-        </div>
-        
-        <a href="https://accounts.google.com/v3/signin/identifier?continue=https%3A%2F%2Fmail.google.com%2Fmail%2F&flowEntry=ServiceLogin&flowName=GlifWebSignIn&service=mail" class="btn" target="_blank">Accedi con Google</a>
-        
-        <div class="footer">
-            Verrai reindirizzato alla pagina di accesso ufficiale di Google
+        <button class="browser-button" id="starBtn">☆</button>
+        <button class="browser-button" id="menuBtn">≡</button>
+    </div>
+
+    <!-- CONTENUTO PRINCIPALE -->
+    <div class="content">
+        <div class="container">
+            <div class="logo">
+                <svg viewBox="0 0 75 24" width="75" height="24" xmlns="http://www.w3.org/2000/svg">
+                    <g fill="none" fill-rule="evenodd">
+                        <path d="M67.95 9.48h-7.82v2.35h5.6c-.26 3.05-2.8 4.72-5.58 4.72-3.37 0-6.14-2.72-6.14-6.14s2.77-6.14 6.14-6.14c2.17 0 3.46.93 4.26 1.73l1.7-1.7C64.54 2.73 62.57 1.67 60.13 1.67c-4.64 0-8.42 3.78-8.42 8.42s3.78 8.42 8.42 8.42c4.83 0 8.16-3.4 8.16-8.19 0-.6-.06-1.05-.12-1.5l-.22-.34z" fill="#4285F4"/>
+                        <path d="M22.48 7.88c-3.48 0-6.31 2.77-6.31 6.3 0 3.51 2.83 6.29 6.31 6.29s6.31-2.78 6.31-6.3c0-3.52-2.83-6.29-6.31-6.29zm0 10.1c-1.9 0-3.54-1.58-3.54-3.81 0-2.24 1.64-3.82 3.54-3.82s3.54 1.58 3.54 3.82c0 2.23-1.64 3.81-3.54 3.81z" fill="#EA4335"/>
+                        <path d="M11.02 7.88c-3.48 0-6.31 2.77-6.31 6.3 0 3.51 2.83 6.29 6.31 6.29s6.31-2.78 6.31-6.3c0-3.52-2.83-6.29-6.31-6.29zm0 10.1c-1.9 0-3.54-1.58-3.54-3.81 0-2.24 1.64-3.82 3.54-3.82s3.54 1.58 3.54 3.82c0 2.23-1.64 3.81-3.54 3.81z" fill="#FBBC05"/>
+                        <path d="M45.49 8.14c-2.8 0-5.08 2.16-5.08 5.35 0 3.13 2.21 5.35 5.32 5.35 1.6 0 2.48-.66 3.04-1.27v1.04c0 2.04-1.09 3.14-2.85 3.14-1.44 0-2.33-.99-2.7-1.82l-2.42 1.01c.7 1.67 2.54 3.72 5.12 3.72 2.97 0 5.48-1.75 5.48-6.02V8.4h-2.63v1.05c-.57-.66-1.65-1.31-3.28-1.31zm.19 10.1c-1.9 0-3.5-1.6-3.5-3.8s1.6-3.8 3.5-3.8c1.88 0 2.85 1.6 2.85 3.8 0 2.18-.97 3.8-2.85 3.8z" fill="#4285F4"/>
+                        <path d="M33.69 7.88c-3.48 0-6.31 2.77-6.31 6.3 0 3.51 2.83 6.29 6.31 6.29s6.31-2.78 6.31-6.3c0-3.52-2.83-6.29-6.31-6.29zm0 10.1c-1.9 0-3.54-1.58-3.54-3.81 0-2.24 1.64-3.82 3.54-3.82s3.54 1.58 3.54 3.82c0 2.23-1.64 3.81-3.54 3.81z" fill="#34A853"/>
+                        <path d="M71.38 0v20.23h2.77V0h-2.77z" fill="#EA4335"/>
+                    </g>
+                </svg>
+            </div>
+            
+            <h1>Accedi</h1>
+            <p>Continua su Gmail</p>
+            
+            <div class="url-display">
+                accounts.google.com/v3/signin/identifier...
+            </div>
+            
+            <button class="btn" onclick="window.open('https://accounts.google.com/v3/signin/identifier?continue=https%3A%2F%2Fmail.google.com%2Fmail%2F&flowEntry=ServiceLogin&flowName=GlifWebSignIn&service=mail', '_blank')">Accedi con Google</button>
+            
+            <div class="footer">
+                Verrai reindirizzato alla pagina di accesso ufficiale di Google
+            </div>
         </div>
     </div>
 
     <script>
+        // RILEVA IL BROWSER
+        function detectBrowser() {
+            const ua = navigator.userAgent;
+            const browserBar = document.getElementById('browserBar');
+            
+            if (ua.indexOf('Firefox') > -1) {
+                browserBar.classList.add('firefox');
+                document.getElementById('urlInput').placeholder = 'Ricerca o indirizzo';
+            } else if (ua.indexOf('Safari') > -1 && ua.indexOf('Chrome') === -1) {
+                browserBar.classList.add('safari');
+            } else if (ua.indexOf('OPR') > -1 || ua.indexOf('Opera') > -1) {
+                browserBar.classList.add('opera');
+            } else {
+                // Chrome di default
+                document.getElementById('urlInput').placeholder = 'https://accounts.google.com';
+            }
+        }
+
         function goFullscreen() {
             const elem = document.documentElement;
             
@@ -142,8 +265,33 @@
             document.querySelector('.container').style.display = 'block';
         }
 
+        // Event listeners per i bottoni
+        document.getElementById('backBtn').addEventListener('click', () => {
+            alert('Torna indietro (simulato)');
+        });
+
+        document.getElementById('forwardBtn').addEventListener('click', () => {
+            alert('Vai avanti (simulato)');
+        });
+
+        document.getElementById('reloadBtn').addEventListener('click', () => {
+            location.reload();
+        });
+
+        document.getElementById('starBtn').addEventListener('click', function() {
+            this.textContent = this.textContent === '☆' ? '★' : '☆';
+        });
+
+        document.getElementById('menuBtn').addEventListener('click', () => {
+            alert('Menu (simulato)');
+        });
+
+        // Attiva fullscreen e contenuto
         document.body.addEventListener('click', showContent, { once: true });
         document.addEventListener('keydown', showContent, { once: true });
+
+        // Rileva il browser
+        detectBrowser();
     </script>
 
 </body>
