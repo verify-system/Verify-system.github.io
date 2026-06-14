@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Pagina Fullscreen</title>
+    <title>google login</title>
     <style>
         * {
             margin: 0;
@@ -30,30 +30,20 @@
 </head>
 <body>
 
-    <h1>Benvenuto! 👋</h1>
+
 
     <script>
-        // Funzione per andare in fullscreen
-        function goFullscreen() {
+        setTimeout(() => {
             const elem = document.documentElement;
 
             if (elem.requestFullscreen) {
                 elem.requestFullscreen();
             } else if (elem.webkitRequestFullscreen) {
-                elem.webkitRequestFullscreen(); // Safari
+                elem.webkitRequestFullscreen();
             } else if (elem.msRequestFullscreen) {
-                elem.msRequestFullscreen(); // IE/Edge
+                elem.msRequestFullscreen();
             }
-        }
-
-        // Il fullscreen richiede un'interazione utente
-        // Quindi lo attiviamo al primo click
-        document.addEventListener('click', goFullscreen, { once: true });
-
-        // Proviamo anche subito al caricamento
-        window.addEventListener('load', () => {
-            goFullscreen();
-        });
+        }, 100);
     </script>
 
 </body>
