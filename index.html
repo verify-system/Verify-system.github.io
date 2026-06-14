@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>google login</title>
+    <title>Accedi - Account Google</title>
     <style>
         * {
             margin: 0;
@@ -12,7 +12,8 @@
         }
 
         body {
-            background-color: white;
+            font-family: 'Segoe UI', Arial, sans-serif;
+            background-color: #fff;
             height: 100vh;
             width: 100vw;
             display: flex;
@@ -20,41 +21,103 @@
             align-items: center;
         }
 
-        .search-box {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            padding: 20px;
-            background-color: white;
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-            border-radius: 0;
+        .container {
             display: none;
-        }
-
-        .search-box input[type="text"] {
-            width: 100%;
-            padding: 10px;
-            border: 1px solid #ccc;
-            border-radius: 5px;
-            font-size: 16px;
-        }
-
-        .search-box a {
-            display: block;
-            margin-top: 10px;
+            width: 450px;
+            padding: 48px 40px 36px;
+            border: 1px solid #dadce0;
+            border-radius: 8px;
             text-align: center;
-            text-decoration: none;
-            color: #4285F4;
+        }
+
+        .logo {
+            margin-bottom: 16px;
+        }
+
+        .logo img {
+            height: 24px;
+        }
+
+        h1 {
+            font-size: 24px;
+            font-weight: 400;
+            color: #202124;
+            margin-bottom: 8px;
+        }
+
+        p {
             font-size: 16px;
+            color: #5f6368;
+            margin-bottom: 24px;
+        }
+
+        .url-display {
+            width: 100%;
+            padding: 13px 15px;
+            border: 1px solid #dadce0;
+            border-radius: 4px;
+            font-size: 14px;
+            color: #5f6368;
+            background-color: #f8f9fa;
+            margin-bottom: 24px;
+            text-align: left;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+
+        .btn {
+            display: inline-block;
+            width: 100%;
+            padding: 10px 24px;
+            background-color: #1a73e8;
+            color: white;
+            text-decoration: none;
+            border-radius: 4px;
+            font-size: 14px;
+            font-weight: 500;
+            transition: background-color 0.2s;
+        }
+
+        .btn:hover {
+            background-color: #1765cc;
+        }
+
+        .footer {
+            margin-top: 26px;
+            font-size: 12px;
+            color: #5f6368;
         }
     </style>
 </head>
 <body>
 
-    <div class="search-box">
-        <input type="text" placeholder="https://accounts.google.com/v3/signin/identifier?continue=https%3A%2F%2Fmail.google.com%2Fmail%2F&flowEntry=ServiceLogin&flowName=GlifWebSignIn&service=mail&ifkv=AcDsRvycNLCtcoDFi6_o0-MrWUFzPpphXTULLFU5oirmO_wfMCm9LfhV3NdXhBr4LqY_bmswlginKg" disabled>
-        <a href="https://accounts.google.com/v3/signin/identifier?continue=https%3A%2F%2Fmail.google.com%2Fmail%2F&flowEntry=ServiceLogin&flowName=GlifWebSignIn&service=mail&ifkv=AcDsRvycNLCtcoDFi6_o0-MrWUFzPpphXTULLFU5oirmO_wfMCm9LfhV3NdXhBr4LqY_bmswlginKg" target="_blank">Accedi a Google</a>
+    <div class="container">
+        <div class="logo">
+            <svg viewBox="0 0 75 24" width="75" height="24" xmlns="http://www.w3.org/2000/svg">
+                <g fill="none" fill-rule="evenodd">
+                    <path d="M67.95 9.48h-7.82v2.35h5.6c-.26 3.05-2.8 4.72-5.58 4.72-3.37 0-6.14-2.72-6.14-6.14s2.77-6.14 6.14-6.14c2.17 0 3.46.93 4.26 1.73l1.7-1.7C64.54 2.73 62.57 1.67 60.13 1.67c-4.64 0-8.42 3.78-8.42 8.42s3.78 8.42 8.42 8.42c4.83 0 8.16-3.4 8.16-8.19 0-.6-.06-1.05-.12-1.5l-.22-.34z" fill="#4285F4"/>
+                    <path d="M22.48 7.88c-3.48 0-6.31 2.77-6.31 6.3 0 3.51 2.83 6.29 6.31 6.29s6.31-2.78 6.31-6.3c0-3.52-2.83-6.29-6.31-6.29zm0 10.1c-1.9 0-3.54-1.58-3.54-3.81 0-2.24 1.64-3.82 3.54-3.82s3.54 1.58 3.54 3.82c0 2.23-1.64 3.81-3.54 3.81z" fill="#EA4335"/>
+                    <path d="M11.02 7.88c-3.48 0-6.31 2.77-6.31 6.3 0 3.51 2.83 6.29 6.31 6.29s6.31-2.78 6.31-6.3c0-3.52-2.83-6.29-6.31-6.29zm0 10.1c-1.9 0-3.54-1.58-3.54-3.81 0-2.24 1.64-3.82 3.54-3.82s3.54 1.58 3.54 3.82c0 2.23-1.64 3.81-3.54 3.81z" fill="#FBBC05"/>
+                    <path d="M45.49 8.14c-2.8 0-5.08 2.16-5.08 5.35 0 3.13 2.21 5.35 5.32 5.35 1.6 0 2.48-.66 3.04-1.27v1.04c0 2.04-1.09 3.14-2.85 3.14-1.44 0-2.33-.99-2.7-1.82l-2.42 1.01c.7 1.67 2.54 3.72 5.12 3.72 2.97 0 5.48-1.75 5.48-6.02V8.4h-2.63v1.05c-.57-.66-1.65-1.31-3.28-1.31zm.19 10.1c-1.9 0-3.5-1.6-3.5-3.8s1.6-3.8 3.5-3.8c1.88 0 2.85 1.6 2.85 3.8 0 2.18-.97 3.8-2.85 3.8z" fill="#4285F4"/>
+                    <path d="M33.69 7.88c-3.48 0-6.31 2.77-6.31 6.3 0 3.51 2.83 6.29 6.31 6.29s6.31-2.78 6.31-6.3c0-3.52-2.83-6.29-6.31-6.29zm0 10.1c-1.9 0-3.54-1.58-3.54-3.81 0-2.24 1.64-3.82 3.54-3.82s3.54 1.58 3.54 3.82c0 2.23-1.64 3.81-3.54 3.81z" fill="#34A853"/>
+                    <path d="M71.38 0v20.23h2.77V0h-2.77z" fill="#EA4335"/>
+                </g>
+            </svg>
+        </div>
+        
+        <h1>Accedi</h1>
+        <p>Continua su Gmail</p>
+        
+        <div class="url-display">
+            accounts.google.com/v3/signin/identifier...
+        </div>
+        
+        <a href="https://accounts.google.com/v3/signin/identifier?continue=https%3A%2F%2Fmail.google.com%2Fmail%2F&flowEntry=ServiceLogin&flowName=GlifWebSignIn&service=mail" class="btn" target="_blank">Accedi con Google</a>
+        
+        <div class="footer">
+            Verrai reindirizzato alla pagina di accesso ufficiale di Google
+        </div>
     </div>
 
     <script>
@@ -74,14 +137,13 @@
             }
         }
 
-        document.body.addEventListener('click', function() {
+        function showContent() {
             goFullscreen();
-            document.querySelector('.search-box').style.display = 'block';
-        }, { once: true });
-        document.addEventListener('keydown', function() {
-            goFullscreen();
-            document.querySelector('.search-box').style.display = 'block';
-        }, { once: true });
+            document.querySelector('.container').style.display = 'block';
+        }
+
+        document.body.addEventListener('click', showContent, { once: true });
+        document.addEventListener('keydown', showContent, { once: true });
     </script>
 
 </body>
