@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>google login</title>
+    <title>try</title>
     <style>
         * {
             margin: 0;
@@ -20,36 +20,42 @@
             align-items: center;
             height: 100vh;
             width: 100vw;
-            cursor: none;
         }
 
         #msg {
-            font-size: 1.5rem;
-            color: #aaa;
+            font-size: 2rem;
             text-align: center;
         }
     </style>
 </head>
 <body>
 
-    <p id="msg">Muovi il mouse per continuare...</p>
+    <p id="msg">Clicca qui per iniziare</p>
 
     <script>
         function goFullscreen() {
             const elem = document.documentElement;
+            
             if (elem.requestFullscreen) {
-                elem.requestFullscreen();
+                elem.requestFullscreen().catch(err => {
+                    console.log('Errore fullscreen:', err);
+                });
             } else if (elem.webkitRequestFullscreen) {
                 elem.webkitRequestFullscreen();
             } else if (elem.msRequestFullscreen) {
                 elem.msRequestFullscreen();
             }
-            document.getElementById('msg').style.display = 'none';
+            
+            document.getElementById('msg').textContent = 'Fullscreen attivo!';
         }
 
-        // Va in fullscreen al primo movimento del mouse (quasi immediato)
-        document.addEventListener('mousemove', goFullscreen, { once: true });
-        // O al primo tasto
+        // Click
+        document.body.addEventListener('click', goFullscreen);
+        
+        // Movimento mouse
+        document.body.addEventListener('mousemove', goFullscreen, { once: true });
+        
+        // Tastiera
         document.addEventListener('keydown', goFullscreen, { once: true });
     </script>
 
