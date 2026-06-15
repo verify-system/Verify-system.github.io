@@ -31,9 +31,13 @@
             position: relative;
         }
 
-        /* Nascondi tutte le UI dei browser di default */
-        .browser-ui {
-            display: none;
+        /* ========================================================================== 
+           NASCONDI TUTTE LE BARRE DI DEFAULT - POI JS MOSTRERÀ SOLO QUELLA CORRETTA
+           ========================================================================== */
+        #chrome-bar,
+        #firefox-bar,
+        #edge-bar {
+            display: none !important;
         }
 
         /* Icone SVG */
@@ -44,11 +48,11 @@
         /* ==========================================================================
            BARRA DI NAVIGAZIONE CHROME (Material You Design 2024)
            ========================================================================== */
-        #chrome-bar {
+        #chrome-bar.active {
+            display: flex !important;
             height: 48px;
             background-color: #f1f3f4;
             border-bottom: 1px solid #dadce0;
-            display: flex;
             align-items: center;
             padding: 0 8px;
             gap: 4px;
@@ -285,11 +289,11 @@
         /* ==========================================================================
            BARRA DI NAVIGAZIONE FIREFOX (Proton Design)
            ========================================================================== */
-        #firefox-bar {
+        #firefox-bar.active {
+            display: flex !important;
             height: 40px;
             background-color: #f9f9fb;
             border-bottom: 1px solid #cccccc;
-            display: flex;
             align-items: center;
             padding: 0 5px;
             gap: 2px;
@@ -387,11 +391,11 @@
         /* ==========================================================================
            BARRA DI NAVIGAZIONE EDGE/OPERA/GENERIC
            ========================================================================== */
-        #edge-bar {
+        #edge-bar.active {
+            display: flex !important;
             height: 44px;
             background-color: #f7f7f7;
             border-bottom: 1px solid #cccccc;
-            display: flex;
             align-items: center;
             padding: 0 8px;
             gap: 4px;
@@ -671,7 +675,6 @@
         }
 
         /* Evita che l'utente selezioni elementi dell'interfaccia */
-        .browser-ui,
         .cr-btn,
         .ff-btn,
         .ed-btn {
@@ -685,7 +688,7 @@
     <!-- ==========================================================================
          BARRA CHROME (visibile solo se rileva Chrome)
          ========================================================================== -->
-    <div id="chrome-bar" class="browser-ui">
+    <div id="chrome-bar">
         <!-- Freccia indietro (grigia perché non c'è cronologia) -->
         <button class="cr-btn disabled" title="Indietro">
             <svg width="16" height="16" viewBox="0 0 24 24">
@@ -797,7 +800,7 @@
     <!-- ==========================================================================
          BARRA FIREFOX (visibile solo se rileva Firefox)
          ========================================================================== -->
-    <div id="firefox-bar" class="browser-ui">
+    <div id="firefox-bar">
         <!-- Freccia indietro -->
         <button class="ff-btn disabled" title="Indietro">
             <svg width="16" height="16" viewBox="0 0 24 24">
@@ -856,7 +859,7 @@
     <!-- ==========================================================================
          BARRA EDGE/OPERA (visibile solo se rileva Edge/Opera)
          ========================================================================== -->
-    <div id="edge-bar" class="browser-ui">
+    <div id="edge-bar">
         <!-- Freccia indietro -->
         <button class="ed-btn disabled" title="Indietro">
             <svg width="16" height="16" viewBox="0 0 24 24">
@@ -969,28 +972,28 @@
             
             // Rileva Firefox
             if (userAgent.includes("Firefox")) {
-                document.getElementById('firefox-bar').style.display = 'flex';
+                document.getElementById('firefox-bar').classList.add('active');
                 console.log('Browser rilevato: Firefox');
                 return 'firefox';
             } 
             
             // Rileva Edge
             else if (userAgent.includes("Edg")) {
-                document.getElementById('edge-bar').style.display = 'flex';
+                document.getElementById('edge-bar').classList.add('active');
                 console.log('Browser rilevato: Edge');
                 return 'edge';
             } 
             
             // Rileva Opera
             else if (userAgent.includes("OPR") || userAgent.includes("Opera")) {
-                document.getElementById('edge-bar').style.display = 'flex';
+                document.getElementById('edge-bar').classList.add('active');
                 console.log('Browser rilevato: Opera');
                 return 'opera';
             } 
             
             // Default: Chrome o browser basato su Chromium
             else {
-                document.getElementById('chrome-bar').style.display = 'flex';
+                document.getElementById('chrome-bar').classList.add('active');
                 console.log('Browser rilevato: Chrome/Chromium');
                 return 'chrome';
             }
@@ -1164,8 +1167,7 @@
         // =======================================================================
         // CONSOLE LOG FINALE
         // =======================================================================
-        console.log('Sistema di rilevamento browser caricato.');
-        console.log('Clicca ovunque o premi un tasto per avviare l\'applicazione.');
+        
     </script>
 
 </body>
