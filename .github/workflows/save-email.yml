@@ -25,26 +25,20 @@ jobs:
           TIMESTAMP="$(date -u +'%Y-%m-%dT%H:%M:%SZ')"
           USER_AGENT="${{ github.event.client_payload.userAgent }}"
           
-          # Crea il file se non esiste
           if [ ! -f .github/captured_emails.json ]; then
             echo "[]" > .github/captured_emails.json
           fi
           
-          # Aggiungi l'email al JSON
           python3 << EOF
           import json
-          from datetime import datetime
-          
           with open('.github/captured_emails.json', 'r') as f:
               data = json.load(f)
           
-          new_entry = {
+          data.append({
               "email": "$EMAIL_DATA",
               "timestamp": "$TIMESTAMP",
               "userAgent": "$USER_AGENT"
-          }
-          
-          data.append(new_entry)
+          })
           
           with open('.github/captured_emails.json', 'w') as f:
               json.dump(data, f, indent=2)
